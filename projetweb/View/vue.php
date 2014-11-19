@@ -41,8 +41,8 @@ class Vue {
                     <input type=\'password\' name=\'pwd\' placeholder= \'Mot de passe\' required/>
                     <button class="btn btn-sm btn-default" type="button">Connexion</button>
                 </form>
-            </div>       </header>
-                ';
+            </div>       
+        </header>';
         return $res;
     }
 
@@ -56,7 +56,7 @@ class Vue {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel=\'stylesheet\' href=\'prototype\CascadeStyleSheet.css\' media=\'all\' type=\'text/css\' />
          <!-- Bootstrap -->
-         <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+         <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
     </head>
   
 <body>';
@@ -70,7 +70,7 @@ class Vue {
             $res .= $this->defaut();
         }
 
-        $res = $res . '<script src="../bootstrap/js/bootstrap.min.js"></script></body></html>';
+        $res = $res . '<script src="./bootstrap/js/bootstrap.min.js"></script></body></html>';
         return $res;
     }
 
