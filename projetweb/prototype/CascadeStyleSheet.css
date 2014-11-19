@@ -32,27 +32,18 @@ header{
   overflow: hidden;
 }
 
-#inscription{
-  float: right;
-  display: inline-block;
-  margin-left: 15px;
-  background-color: #FF6200;
-  border-bottom: solid 5px;
-  border-color: #000;
-  padding-right: 15px;
-  padding-left: 15px;
+.right-co
+{
+    display: inline-block;
+    float: right;
 }
 
-#login
+form
 {
     
 }
 
-#login>div
-{
-}
-
-#login>div>input
+#login>input
 {
     border-radius: 10px;
     margin-right: 10px;
