@@ -4,7 +4,6 @@
   * avec la base de données
   * BOULANGER Vincent & DAUSSY Alexandre
   */
-include_once 'param_co.php';
 class base{
 
 
@@ -25,7 +24,10 @@ class base{
 
 
 	public static function connect(){
-		global $host, $user, $pass, $base;
+		$host= "localhost";
+                $user= "root";
+                $pass= ""; 
+                $base= "projetweb";
 		try{
 			$dns = "mysql:host=$host;dbname=$base";
 			$connection = new PDO($dns, $user, $pass,	
