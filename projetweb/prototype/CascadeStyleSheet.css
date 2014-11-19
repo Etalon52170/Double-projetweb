@@ -50,14 +50,6 @@ header{
 
 #login>div
 {
-  float: right;
-  display: inline-block;
-  margin-left: 15px;
-  background-color: #FF6200;
-  border-bottom: solid 5px;
-  border-color: #000;
-  padding-right: 15px;
-  padding-left: 15px;
 }
 
 #login>div>input

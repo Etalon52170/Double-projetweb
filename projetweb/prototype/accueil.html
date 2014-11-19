@@ -10,6 +10,8 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel='stylesheet' href='CascadeStyleSheet.css' media='all' type='text/css' />
+         <!-- Bootstrap -->
+         <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <header>
@@ -17,15 +19,17 @@ and open the template in the editor.
                 <a href = 'blog.php?a=inscription'>Inscription</a>
             </div>
             <form id='login' action='auth.php' method='post'>
-                <div class='boutton'>
-                    <button type='submit'>Connexion</button>
-                </div>
+                
                 <div id= identification >
                     <input type='text' name='nom' placeholder= 'Nom' required/>
-		<input type='password' name='pwd' placeholder= 'Mot de passe' required/>
+                    <input type='password' name='pwd' placeholder= 'Mot de passe' required/>
+                    <button type='submit'>Connexion</button>
                 </div>
             </form>
         </header>
         <div>TODO write content</div>
+        
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
     </body>
 </html>
