@@ -36,6 +36,7 @@ header{
 {
     display: inline-block;
     float: right;
+    margin-left: 10px;
 }
 
 form
