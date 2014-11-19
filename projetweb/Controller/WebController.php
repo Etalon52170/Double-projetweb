@@ -2,6 +2,7 @@
 
 include_once './Model/Utilisateur.php';
 include_once 'Controller.php';
+include_once './View/Vue.php';
 
 class WebController extends Controller {
 
