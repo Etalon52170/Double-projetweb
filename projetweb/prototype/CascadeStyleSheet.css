@@ -39,9 +39,21 @@ header{
     margin-left: 10px;
 }
 
-form
+.left-score
 {
-    
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+}
+
+.ScorePerso
+{
+   font-size: 30px;
+   color: white;
+}
+
+form
+{    
 }
 #headprincipal{
     background-color: #28a4c9;
@@ -49,11 +61,8 @@ form
 #legame{
     height: 100%;
     width: 100%;
-    background-color: grey;
-    
+    background-color: grey; 
 }
-
-
 
 #login>input
 {
