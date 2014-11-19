@@ -21,12 +21,15 @@ class Vue {
         'enfant2'=>'enf2',                                                
         'listeFactu' => 'listeFactures',
         'listE'=>'listeEnfants',
-        'factu'=>'facture'
+        'factu'=>'facture',
+         'acceuil'=>'acceuilpage'
         );
 
     public function __construct() {
         
     }
+    
+    
 
     public function __set($attr_name, $attr_val) {
 
@@ -45,7 +48,22 @@ class Vue {
         $emess = __CLASS__ . ": unknown member $attr_name (getAttr)";
         throw new Exception($emess, 45);
     }
-
+    private function acceuilpage(){
+        $res ='
+        <header>
+            <div id=\'inscription\'>
+                <a href = \'blog.php?a=inscription\'>Inscription</a>
+            </div>
+            <form id=\'login\' action=\'auth.php\' method=\'post\'>
+                <div classboutton\'>
+                    <button type=\'submit\'>Connexion</button>
+                </div>
+                <div id= identification >
+                    <input type=\'text\' name=\'nom\' placeholder= \'Nom\' required/>
+		<input type=\'password\' name=\'pwd\' placeholder= \'Mot de passe\' required/>
+                ';
+        return $res;
+    }
     private function newEnf() {
         if (isset($_GET['b'])) {
             $res = '<form METHOD="POST" ACTION="index.php?a=saveE&b=' . $_GET['b'] . '">
@@ -385,15 +403,7 @@ class Vue {
 	<link rel="stylesheet" href="style.css" type="text/css" /> 
 </head>  
   
-<body>
-<div id ="pageHead" role="banner"><p id="co"></div>
-<div id="fond"> <a href=index.php>
-      <div class="ruban">     
-        <h2>CLSH - - ACSI</h2>     
-      </div>     </a>
-<div class="ruban_gauche"></div>
-<div class="ruban_droit"></div>
-</div><br/><div id="separe"><br/><br/><br/></div><br/><br/>';
+<body>';
 
         if(array_key_exists($select, $this->tabSelecteur))
         {
