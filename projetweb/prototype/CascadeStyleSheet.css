@@ -17,26 +17,39 @@ body, html{
 }
 
 body{
-  background-color: #FFFFFF;
+    background-color: #FFFFFF;
 }
 
 header{
-  display: block;
-  background-color: #005578;
-  text-align: center;
-  margin-bottom: 20px;
-  border-bottom: solid 5px;
-  border-color: #000;   
-  padding: 0.856rem;
-  padding-bottom: 20px;
-  overflow: hidden;
+    display: block;
+    background-color: #005578;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: solid 5px;
+    border-color: #000;   
+    padding: 0.856rem;
+    padding-bottom: 20px;
+    overflow: hidden;
 }
 
 .right-co
 {
-    display: inline-block;
     float: right;
     margin-left: 10px;
+}
+
+.espaceCellule{
+    padding: 2px 2px;
+}
+
+.invisibleError {
+    display: none;
+    font-family: 'Lucida Bright', Georgia, serif;
+    font-size: 13px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 18.5714302062988px;
 }
 
 .left-score
@@ -48,8 +61,8 @@ header{
 
 .ScorePerso
 {
-   font-size: 30px;
-   color: white;
+    font-size: 30px;
+    color: white;
 }
 
 form
