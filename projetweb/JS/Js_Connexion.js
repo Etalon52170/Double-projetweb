@@ -6,30 +6,37 @@ function validerConnexion() {
     if (XmlHttp == null) {
         alert("Objets HTTP non supportés");
     } else {
-        
         XmlHttp.onreadystatechange = stateChanged;
-        XmlHttp.open("GET", "vue.php", true);
+        XmlHttp.open("GET", "./Controller/ReponsesAjax.php?pwd=" + pass + "&log=" + acc, false);
         XmlHttp.send(null);
     }
 
 }
 
 function GetXmlHttpObject()
-{ var xmlhttpreq=null;
- if(window.XMLHttpRequest)
- { xmlhttpreq = new XMLHttpRequest(); }
- else if(window.ActiveXObject)
- { xmlhttpreq = new ActiveXObject("Microsoft.XMLHTTP"); }
- return(xmlhttpreq);
+{
+    var xmlhttpreq = null;
+    if (window.XMLHttpRequest)
+    {
+        xmlhttpreq = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject)
+    {
+        xmlhttpreq = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return(xmlhttpreq);
 }
 
 function stateChanged()
 {
-    if (XmlHttp.readyState == 4)
-        if (XmlHttp.responseText == false) {
-            alert("tamere");
+    //var json;
+    if (XmlHttp.readyState == 4) {
+        json = JSON.parse(XmlHttp.responseText);
+        if (json.find == "ok") {
+            window.location.href = "http://localhost/PhpProject1/Double-projetweb/projetweb/";
         } else {
-            //window.location.href = "http://localhost/PhpProject1/Double-projetweb/projetweb/";
-            alert("Alerte aux gogoles ! alerte aux gogoles les ")
+            document.getElementById('mdpIncorrect').style.display = "block";
+            setTimeout(function() { document.getElementById('mdpIncorrect').style.display = "none"; },3000);
         }
+    }
 }
