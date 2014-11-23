@@ -32,7 +32,7 @@ header{
     overflow: hidden;
 }
 
-.right-co
+.right
 {
     float: right;
     margin-left: 10px;
@@ -52,6 +52,10 @@ header{
     line-height: 18.5714302062988px;
 }
 
+.centre{
+    text-align: center;
+}
+
 .left-score
 {
     display: inline-block;
@@ -61,13 +65,10 @@ header{
 
 .ScorePerso
 {
-    font-size: 30px;
-    color: white;
+    font-size: 20px;
+    color: #ADFF2F;
 }
 
-form
-{    
-}
 #headprincipal{
     background-color: #28a4c9;
 }
