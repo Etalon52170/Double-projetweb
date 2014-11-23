@@ -32,16 +32,32 @@ class Vue {
     private function acceuilpage() {
         $res = '
         <header>
-        <script type="text/JavaScript" src="./JS/Js_Connexion.js"></script>
-            <div class = \'right-co\'>
-                <button class="btn btn-sm btn-default" type="button">Inscription</button>
-            </div>
-            <div class=\'right-co\'>
-                <input class="form-control" id="log" type=\'text\' name=\'log\' placeholder= \'Nom\' required/>
-                <input class="form-control" id="pwd" type=\'password\' name=\'pwd\' placeholder= \'Mot de passe\' required/>
-                <button class="btn btn-sm btn-default" type="button" onClick="validerConnexion()">Connexion</button>
-            </div>       
-        </header>';
+            <script type="text/JavaScript" src="./JS/Js_Connexion.js"></script>
+            <table class ="right-co" >
+                <tr>
+                    <td class="espaceCellule"><input class="form-control" id="log" type=\'text\' name=\'log\' placeholder= \'Nom\' required/></td>
+                    <td class ="espaceCellule"><input class="form-control" id="pwd" type=\'password\' name=\'pwd\' placeholder= \'Mot de passe\' required/></td>
+                    <td><button class="btn btn-sm btn-default" type="button" onClick="validerConnexion()">Connexion</button></td>
+                </tr> 
+                </tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-sm btn-default" type="button">Inscription</button>            
+                    </td>
+                </tr>
+                <tr>
+                    <div class="invisibleError btn-sm btn-default" id="mdpIncorrect">
+                        Pseudo ou Mot de passe incorrect !!
+                    </div>
+                </tr>
+            </table>   
+        
+        </header>
+        
+        <div id="image" >
+            <img src="../ressource/dobble.png">
+        </div>';
         return $res;
     }
 
