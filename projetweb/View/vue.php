@@ -56,7 +56,7 @@ class Vue {
         </header>
         
         <div id="image" >
-            <img src="../ressource/dobble.png">
+            <img src="./img/dobble.png">
         </div>';
         return $res;
     }

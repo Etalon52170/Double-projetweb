@@ -1,13 +1,15 @@
 <?php
 
+include_once 'Base.php';
 
 class Utilisateur {
 
     private $id_user;
-    private $pseudo;
-    private $score;
-    private $nb_game;
-
+    private $login;
+    private $password;
+    private $nb_victoire;
+    private $nb_partie;
+    private $mail;
 
     public function __construct() {
         
@@ -35,12 +37,14 @@ class Utilisateur {
 
         try {
             $db = Base::getConnection();
-            $insert_query = "INSERT INTO user (id_user,pseudo,score,nb_game) "
-                    . "VALUES (:pseudo, :score, :nb_game)";
+            $insert_query = "INSERT INTO user (id_user,login,password,nb_victoire,nb_partie,mail) "
+                    . "VALUES (:login, :password, :nb_victoire, :nb_partie, :mail)";
             $query = $db->prepare($insert_query);
-            $query->bindParam(":pseudo", $this->pseudo, PDO::PARAM_STR);
-            $query->bindParam(":score", $this->score, PDO::PARAM_INT);
-            $query->bindParam(":nb_game", $this->nb_game, PDO::PARAM_INT);
+            $query->bindParam(":login", $this->login, PDO::PARAM_STR);
+            $query->bindParam(":password", $this->password, PDO::PARAM_STR);
+            $query->bindParam(":nb_victoire", $this->nb_victoire, PDO::PARAM_INT);
+            $query->bindParam(":nb_partie", $this->nb_partie, PDO::PARAM_INT);
+            $query->bindParam(":mail", $this->mail, PDO::PARAM_STR);
             $a = $query->execute();
             $this->id_user = $db->LastInsertId();
         } catch (PDOException $e) {
@@ -59,9 +63,11 @@ class Utilisateur {
             $d = $query->fetch(PDO::FETCH_BOTH);
             $s = new Utilisateur();
             $s->id_user = $d[0];
-            $s->pseudo = $d[1];
-            $s->score = $d[2];
-            $s->nb_game = $d[3];
+            $s->login = $d[1];
+            $s->password = $d[2];
+            $s->nb_victoire = $d[3];
+            $s->nb_partie = $d[4];
+            $s->mail = $d[5];
             return $s;
         } catch (PDOException $e) {
             echo("méthode insert() non implantée");
@@ -79,9 +85,11 @@ class Utilisateur {
             while ($d = $query->fetch(PDO::FETCH_BOTH)) {
                 $s = new Utilisateur();
                 $s->id_user = $d[0];
-                $s->pseudo = $d[1];
-                $s->score = $d[2];
-                $s->nb_game = $d[3];
+                $s->login = $d[1];
+                $s->password = $d[2];
+                $s->nb_victoire = $d[3];
+                $s->nb_partie = $d[4];
+                $s->mail = $d[5];
                 $res[] = $s;
             }
             return $res;
