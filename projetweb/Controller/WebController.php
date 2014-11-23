@@ -7,17 +7,32 @@ include_once './View/Vue.php';
 class WebController extends Controller {
 
     public function __construct() {
-        $this->actionlist = array('jeux' => 'afficheJeux');
+        $this->actionlist = array('jeux' => 'afficheJeux',
+            'inscri' => 'inscription');
     }
 
     protected function afficheJeux() {
-        $view = new Vue();
-        echo $view->affichageGeneral('jeux');
+        if (isset($_SESSION['id_user'])) {
+            $view = new Vue();
+            echo $view->affichageGeneral('jeux');
+        } else {
+            $this->defaultAction();
+        }
     }
 
-    protected function defaultAction($p) {
+    protected function defaultAction() {
+        if (isset($_SESSION['id_user'])) {
+            $view = new Vue();
+            echo $view->affichageGeneral('jeux');
+        } else {
+            $view = new Vue();
+            echo $view->affichageGeneral('acceuil');
+        }
+    }
+
+    protected function inscription() {
         $view = new Vue();
-        echo $view->affichageGeneral('acceuil');
+        echo $view->affichageGeneral('inscri');
     }
 
 }
