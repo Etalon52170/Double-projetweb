@@ -37,7 +37,7 @@ class Utilisateur {
 
         try {
             $db = Base::getConnection();
-            $insert_query = "INSERT INTO user (id_user,login,password,nb_victoire,nb_partie,mail) "
+            $insert_query = "INSERT INTO utilisateur (login,password,nb_victoire,nb_partie,mail) "
                     . "VALUES (:login, :password, :nb_victoire, :nb_partie, :mail)";
             $query = $db->prepare($insert_query);
             $query->bindParam(":login", $this->login, PDO::PARAM_STR);
