@@ -68,6 +68,37 @@ header{
     font-size: 20px;
     color: #ADFF2F;
 }
+.ScorePartie
+{
+    font-size: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.Icone
+{
+    
+    display: inline-block;
+    margin: 15px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 40px;
+}
+
+#CarteCentral
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    border-radius: 20%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black;
+    width: 350px;
+    height: 350px;
+    padding: 25px;
+}
 
 #headprincipal{
     background-color: #28a4c9;
