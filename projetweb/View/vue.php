@@ -127,8 +127,8 @@ class Vue {
                 <span>
             </div>
         </header>
-        <div id =\'legame\'>
-            LE GAME MAGGLE
+        <div>
+            
         </div>';
         return $res;
     }
