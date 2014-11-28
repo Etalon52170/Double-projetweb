@@ -98,9 +98,9 @@ class Utilisateur {
             return null;
         }
     }
-    
-    public static function findByLogPwd($log,$pwd){
-         try {
+
+    public static function findByLogPwd($log, $pwd) {
+        try {
             $c = Base::getConnection();
             $query = $c->prepare("SELECT * FROM utilisateur WHERE login = :login AND password = :password ");
             $query->bindParam(":login", $log, PDO::PARAM_STR);
@@ -120,9 +120,9 @@ class Utilisateur {
             return null;
         }
     }
-    
-    public static function findByLog($log){
-         try {
+
+    public static function findByLog($log) {
+        try {
             $c = Base::getConnection();
             $query = $c->prepare("SELECT * FROM utilisateur WHERE login = :login");
             $query->bindParam(":login", $log, PDO::PARAM_STR);
