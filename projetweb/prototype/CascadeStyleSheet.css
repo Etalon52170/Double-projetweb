@@ -70,34 +70,44 @@ header{
 }
 .ScorePartie
 {
+    display:inline-block;
     font-size: 20px;
-    margin-left: 50px;
-    margin-right: 50px;
+    margin-left: 5%;
+    margin-right: 5%;
+    text-align: left;
 }
 
-.Icone
-{
-    
-    display: inline-block;
-    margin: 15px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-bottom: 40px;
-}
 
 #CarteCentral
 {
+    width: 350px;
+    height: 350px;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
+    margin-top: 3.5%;
     border-radius: 20%;
     border-width: 5px;
     border-style: solid;
     border-color: black;
-    width: 350px;
-    height: 350px;
-    padding: 25px;
+    padding-top: 3%;
+}
+
+.Icone
+{
+  display: inline-block;
+    width: 70px;
+    height: 70px;
+    text-align:center;
+    line-height: 70px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 7%;
+}
+
+.Icone>img
+{
+    vertical-align: middle;
 }
 
 #CarteJoueur
@@ -105,14 +115,14 @@ header{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
+    margin-top: 3.5%;
     border-radius: 20%;
     border-width: 5px;
     border-style: solid;
     border-color: black;
     width: 350px;
     height: 350px;
-    padding: 25px;
+    padding-top: 3%;
 }
 
 #headprincipal{
