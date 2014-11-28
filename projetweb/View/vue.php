@@ -57,6 +57,12 @@ class Vue {
                                     <div class="controls">
                                             <input type="text" id="log" name="user_name">
                                     </div>
+                                    <div style="display: none;" id="messageErrorLogin"> 
+                                        </br>
+                                        <div class="alert alert-danger">
+                                            <span class="glyphicon glyphicon-remove" ></span><strong> Erreur ! Ce pseudo est déjà utilisé !</strong>
+                                        </div>
+                                    </div>
                             </div>
                             <div class="control-group">
                                     <label class="control-label">Mot de passe</label>
@@ -84,7 +90,7 @@ class Vue {
                             <strong><span class="glyphicon glyphicon-ok" ></span> Inscription effectuée ! Vous allez être redirigé. </strong>
                         </div>
                         <div style="display: none;" class="alert alert-danger" id="messageError"> 
-                            <span class="glyphicon glyphicon-remove" ></span><strong> Erreur ! Veuillez vérifier vos informations ! Le mot de passe ne doit pas être inférieur à 6 charactères.</strong>
+                            <span class="glyphicon glyphicon-remove" ></span><strong> Erreur ! Le mot de passe ne doit pas être inférieur à 6 charactères et l\'addresse mail doit être correcte.</strong>
                         </div>
                     </div>
             </form>

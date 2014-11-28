@@ -6,59 +6,57 @@ session_start();
 $tabSelecteur = array(
     'conn' => 'connexion',
     'deconn' => 'deconnection',
-    'inscri' => 'inscription'
+    'inscri' => 'inscription',
 );
 
-if (array_key_exists($_GET['action'], $tabSelecteur)) {
-    $m = $tabSelecteur[$_GET['action']];
+if (array_key_exists($_POST['action'], $tabSelecteur)) {
+    $m = $tabSelecteur[$_POST['action']];
     $m();
 }
 
 function connexion() {
-    $login = (isset($_GET['log'])) ? $_GET['log'] : "";
-    $password = (isset($_GET['pwd'])) ? $_GET['pwd'] : "";
-    $userList = Utilisateur::findAll();
-    foreach ($userList as $user) {
-
-        if ($user->login == $login && $user->password == $password) {
-            $id = $user->id_user;
-            $res = "ok";
-        }
-    }
-    if (!isset($res)) {
-        $res = 'ko';
+    $login = (isset($_POST['log'])) ? $_POST['log'] : "";
+    $password = (isset($_POST['pwd'])) ? $_POST['pwd'] : "";
+    $user = Utilisateur::findByLogPwd($login, $password);
+    if ($user->login != "") {
+        $_SESSION['id_user'] = $user->id_user;
+        $_SESSION['login'] = $user->login;
+        $_SESSION['nb_partie'] = $user->nb_partie;
+        $_SESSION['nb_victoire'] = $user->nb_victoire;
+        $_SESSION['mail'] = $user->mail;
+        $res = "ok";
     } else {
-        $userConnect = Utilisateur::findById($id);
-        $_SESSION['id_user'] = $userConnect->id_user;
-        $_SESSION['login'] = $userConnect->login;
-        $_SESSION['nb_partie'] = $userConnect->nb_partie;
-        $_SESSION['nb_victoire'] = $userConnect->nb_victoire;
-        $_SESSION['mail'] = $userConnect->mail;
+        $res = 'ko';
     }
-
     $res = array('find' => $res);
     echo(json_encode($res));
 }
 
-function deconnection(){
+function deconnection() {
     $res = session_destroy();
     $res = array('deco' => $res);
     echo(json_encode($res));
 }
 
-
-function inscription(){
-    $login = (isset($_GET['log'])) ? $_GET['log'] : "";
-    $password = (isset($_GET['pwd'])) ? $_GET['pwd'] : "";
-    $email = (isset($_GET['email'])) ? $_GET['email'] : "";
-    $user = new Utilisateur();
-    $user->login = $login;
-    $user->password = $password;
-    $user->nb_victoire = 0;
-    $user->nb_partie = 0;
-    $user->mail = $email;
-    $user->insert();
-    $res = array('inscri' => "true");
+function inscription() {
+    $login = (isset($_POST['log'])) ? $_POST['log'] : "";
+    $password = (isset($_POST['pwd'])) ? $_POST['pwd'] : "";
+    $email = (isset($_POST['email'])) ? $_POST['email'] : "";
+    $user = Utilisateur::findByLog($login);
+    $res = "ok";
+    if ($user->login != "") {
+        $res = "ko";
+    } else {
+        $user = new Utilisateur();
+        $user->login = $login;
+        $user->password = $password;
+        $user->nb_victoire = 0;
+        $user->nb_partie = 0;
+        $user->mail = $email;
+        $user->insert();
+    }
+    $res = array('inscri' => $res);
     echo(json_encode($res));
 }
+
 ?>

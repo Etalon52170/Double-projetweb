@@ -5,8 +5,9 @@ function deconnection() {
         alert("Objets HTTP non supportés");
     } else {
         XmlHttp.onreadystatechange = stateChanged;
-        XmlHttp.open("GET", "./Controller/ReponsesAjax.php?action=deconn", false);
-        XmlHttp.send(null);
+        XmlHttp.open("POST", "./Controller/ReponsesAjax.php", false);
+        XmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        XmlHttp.send("action=deconn");
     }
 
 }
