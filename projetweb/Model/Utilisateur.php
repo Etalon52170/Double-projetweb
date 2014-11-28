@@ -98,6 +98,49 @@ class Utilisateur {
             return null;
         }
     }
+    
+    public static function findByLogPwd($log,$pwd){
+         try {
+            $c = Base::getConnection();
+            $query = $c->prepare("SELECT * FROM utilisateur WHERE login = :login AND password = :password ");
+            $query->bindParam(":login", $log, PDO::PARAM_STR);
+            $query->bindParam(":password", $pwd, PDO::PARAM_STR);
+            $dbres = $query->execute();
+            $d = $query->fetch(PDO::FETCH_BOTH);
+            $s = new Utilisateur();
+            $s->id_user = $d[0];
+            $s->login = $d[1];
+            $s->password = $d[2];
+            $s->nb_victoire = $d[3];
+            $s->nb_partie = $d[4];
+            $s->mail = $d[5];
+            return $s;
+        } catch (PDOException $e) {
+            echo("méthode insert() non implantée");
+            return null;
+        }
+    }
+    
+    public static function findByLog($log){
+         try {
+            $c = Base::getConnection();
+            $query = $c->prepare("SELECT * FROM utilisateur WHERE login = :login");
+            $query->bindParam(":login", $log, PDO::PARAM_STR);
+            $dbres = $query->execute();
+            $d = $query->fetch(PDO::FETCH_BOTH);
+            $s = new Utilisateur();
+            $s->id_user = $d[0];
+            $s->login = $d[1];
+            $s->password = $d[2];
+            $s->nb_victoire = $d[3];
+            $s->nb_partie = $d[4];
+            $s->mail = $d[5];
+            return $s;
+        } catch (PDOException $e) {
+            echo("méthode insert() non implantée");
+            return null;
+        }
+    }
 
 }
 
