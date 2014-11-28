@@ -32,7 +32,7 @@ function stateChanged()
     if (XmlHttp.readyState == 4) {
         json = JSON.parse(XmlHttp.responseText);
         if (json.deco) {
-            window.location.href = "http://localhost/PhpProject1/Double-projetweb/projetweb/index.php";
+            window.location.href = "./index.php";
         } else {
             alert("La deconnexion n'est pas possible !")
         }
