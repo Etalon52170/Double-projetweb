@@ -100,6 +100,21 @@ header{
     padding: 25px;
 }
 
+#CarteJoueur
+{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    border-radius: 20%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black;
+    width: 350px;
+    height: 350px;
+    padding: 25px;
+}
+
 #headprincipal{
     background-color: #28a4c9;
 }
