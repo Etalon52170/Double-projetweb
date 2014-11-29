@@ -1,10 +1,12 @@
 
 
 function hoverDiv(){
-        $(this).css("border-color","blue");
+        $(this).css("border-color","Black");
+        $(this).css("background-color","#F83400");
 }
 function leaveDiv(){
 	$(this).css("border-color","#FFFFFF");
+        $(this).css("background-color","");
 }
 
 function SendInfo()

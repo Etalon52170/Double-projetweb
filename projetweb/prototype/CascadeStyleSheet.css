@@ -90,7 +90,7 @@ header{
     border-width: 5px;
     border-style: solid;
     border-color: black;
-    padding-top: 2%;
+    padding-top: 2%; 
 }
 
 .Icone
@@ -98,7 +98,6 @@ header{
   display: inline-block;
     width: 75px;
     height: 75px;
-    //text-align:center;
     line-height: 75px;
     margin-left: 5%;
     margin-right: 5%;
