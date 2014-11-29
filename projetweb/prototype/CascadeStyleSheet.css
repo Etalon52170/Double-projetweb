@@ -78,7 +78,7 @@ header{
 }
 
 
-#CarteCentral
+#CarteC
 {
     width: 350px;
     height: 350px;
@@ -90,39 +90,33 @@ header{
     border-width: 5px;
     border-style: solid;
     border-color: black;
-    padding-top: 3%;
+    padding-top: 2%;
 }
 
 .Icone
 {
   display: inline-block;
-    width: 70px;
-    height: 70px;
+    width: 75px;
+    height: 75px;
     text-align:center;
-    line-height: 70px;
+    line-height: 75px;
     margin-left: 5%;
     margin-right: 5%;
     margin-bottom: 7%;
 }
 
+.Cperso
+{
+   border-radius: 48%;
+   border-width: 5px;
+   border-style: solid;
+   border-color: #FFFFFF ;
+   padding-bottom: 20px;
+}
+
 .Icone>img
 {
     vertical-align: middle;
-}
-
-#CarteJoueur
-{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 3.5%;
-    border-radius: 20%;
-    border-width: 5px;
-    border-style: solid;
-    border-color: black;
-    width: 350px;
-    height: 350px;
-    padding-top: 3%;
 }
 
 #headprincipal{
