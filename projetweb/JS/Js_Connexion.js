@@ -1,7 +1,7 @@
 function validerConnexion() {
 
-    var acc = document.getElementById("login").value;
-    var pass = document.getElementById("password").value;
+    var acc = $("#login").val();
+    var pass = $("#password").val();
     var param = "action=conn&pwd=" + md5(pass) + "&log=" + acc;
     XmlHttp = GetXmlHttpObject();
     if (XmlHttp == null) {
@@ -44,7 +44,7 @@ function stateChangedConnexion()
     if (XmlHttp.readyState == 4) {
         json = JSON.parse(XmlHttp.responseText);
         if (json.find == "ok") {
-            window.location.href = "http://localhost/PhpProject1/Double-projetweb/projetweb/index.php?a=jeux";
+            window.location.href = "./index.php?a=jeux";
         } else {
             document.getElementById('mdpIncorrect').style.display = "block";
             setTimeout(function() {
@@ -55,11 +55,11 @@ function stateChangedConnexion()
 }
 
 function versInscription() {
-    location.href = "http://localhost/PhpProject1/Double-projetweb/projetweb/index.php?a=inscri";
+    location.href = "./index.php?a=inscri";
 }
 
 function retour() {
-    location.href = "http://localhost/PhpProject1/Double-projetweb/projetweb/index.php";
+    location.href = "./index.php";
 }
 
 function inscription() {

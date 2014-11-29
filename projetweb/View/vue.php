@@ -127,8 +127,8 @@ class Vue {
                 <span>
             </div>
         </header>
-        <div id =\'legame\'>
-            LE GAME MAGGLE
+        <div>
+            
         </div>';
         return $res;
     }
@@ -196,6 +196,7 @@ class Vue {
             </br>
             LERICHE PIERRE - JEANMOUGIN MATHIEU - PHILIPPE YANNICK
         </footer>
+        <script src="./bootstrap/js/jquery-1.11.0.min.js"></script>
         <script src="./bootstrap/js/bootstrap.min.js"></script></body></html>';
         return $res;
     }
