@@ -1,12 +1,15 @@
 <?php
 
 include_once '../Model/Utilisateur.php';
+include_once '../Model/games.php';
 session_start();
 
 $tabSelecteur = array(
     'conn' => 'connexion',
     'deconn' => 'deconnection',
     'inscri' => 'inscription',
+    'actuJ' => 'actualiserJoueurs',
+    'decPlay' => 'decrementerPlayers'
 );
 
 if (array_key_exists($_POST['action'], $tabSelecteur)) {
@@ -24,11 +27,12 @@ function connexion() {
         $_SESSION['nb_partie'] = $user->nb_partie;
         $_SESSION['nb_victoire'] = $user->nb_victoire;
         $_SESSION['mail'] = $user->mail;
-        $res = "ok";
+        $_SESSION['nbCards'] = $user->nbCards;
+        $_SESSION['game_id'] = $user->game_id;
+        $res['find'] = 'ok';
     } else {
-        $res = 'ko';
+        $res['find'] = 'ko';
     }
-    $res = array('find' => $res);
     echo(json_encode($res));
 }
 
@@ -53,9 +57,64 @@ function inscription() {
         $user->nb_victoire = 0;
         $user->nb_partie = 0;
         $user->mail = $email;
+        $user->nbCards = 0;
         $user->insert();
     }
     $res = array('inscri' => $res);
+    echo(json_encode($res));
+}
+
+function actualiserJoueurs() {
+    $nbPlayers = (isset($_POST['nbPlayers'])) ? $_POST['nbPlayers'] : "";
+    $game = games::findById($_SESSION['game_id']);
+    if ($nbPlayers != $game->nbPlayers) {
+        $code = '<div class="centre-taille40">
+                         <div class="progress ">';
+        if ($game->nbPlayers == 1) {
+            $code .='        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">1 Joueur !</span>
+                            </div>';
+        }
+        if ($game->nbPlayers == 2) {
+
+            $code .='        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">1 Joueur !</span>
+                            </div>
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">2 Joueurs !</span>
+                            </div>';
+        }
+        if ($game->nbPlayers == 3) {
+            $code .='        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">1 Joueur !</span>
+                            </div>
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">2 Joueurs !</span>
+                            </div>
+                            <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">3 Joueurs !</span>
+                            </div>';
+        }
+        $code .='</div></div>';
+        $res = array('nbJoueurs' => $game->nbPlayers,
+            'code' => $code);
+        echo(json_encode($res));
+    }
+}
+
+function decrementerPlayers() {
+    $game = games::findById($_SESSION['game_id']);
+    Utilisateur::updatePartie($_SESSION['id_user'], NULL);
+    //décremente le nombre de joueurs
+    $nbPlayers = $game->nbPlayers - 1;
+    if ($nbPlayers <= 0) {
+        $games = games::findById($_SESSION['game_id']);
+        $games->delete();
+    } else {
+        games::incrementGame($_SESSION['game_id'], $nbPlayers);
+    }
+    $res = array('decrementer' => "ok");
+    $_SESSION['game_id'] = "";
     echo(json_encode($res));
 }
 
