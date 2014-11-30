@@ -42,6 +42,10 @@ header{
     padding: 2px 2px;
 }
 
+.invisible {
+    display: none;
+}
+
 .invisibleError {
     display: none;
     font-family: 'Lucida Bright', Georgia, serif;
@@ -76,8 +80,16 @@ header{
     margin-right: 5%;
     text-align: left;
 }
+.head_underline{
+    font-weight:bold;
+    text-decoration: underline;
+}
 
-
+.centre-taille40{
+    margin-right: auto;
+    margin-left: auto;
+    width: 40%;
+}
 #CarteC
 {
     width: 350px;
@@ -95,7 +107,7 @@ header{
 
 .Icone
 {
-  display: inline-block;
+    display: inline-block;
     width: 75px;
     height: 75px;
     line-height: 75px;
@@ -107,11 +119,11 @@ header{
 
 .Cperso
 {
-   border-radius: 48%;
-   border-width: 5px;
-   border-style: solid;
-   border-color: #FFFFFF ;
-   padding-bottom: 20px;
+    border-radius: 48%;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #FFFFFF ;
+    padding-bottom: 20px;
 }
 
 .Icone>img
