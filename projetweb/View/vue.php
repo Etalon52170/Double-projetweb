@@ -2,11 +2,13 @@
 
 class Vue {
 
-    protected $tab;
+    public $nbPlayers;
+    public $tab_partie;
     protected $tabSelecteur = array(
         'acceuil' => 'acceuilpage',
         'jeux' => 'pagePrincipale',
-        'inscri' => 'inscription'
+        'inscri' => 'inscription',
+        'partie' => 'partie'
     );
 
     public function __construct() {
@@ -31,8 +33,84 @@ class Vue {
         throw new Exception($emess, 45);
     }
 
-    private function inscription(){
-        $res ='
+    private function header() {
+        $res = '
+        <header>
+            <script type="text/JavaScript" src="./JS/Js_Jeu.js"></script>
+            <div class = \'left-score\'>
+                <span class = \'ScorePerso\'>
+                    <img src=\'../ressource/image/40px-Coin.png\' title="Nombre de parties" height="25" width="25">
+                    : ' .
+                $_SESSION['nb_partie']
+                . '
+                <span>
+            </div>
+            <div class = \'left-score\'>
+                <span class = \'ScorePerso\'>
+                    <img src="../ressource/image/40px-Key.png" title="Nombre de victoires" height="25" width="25"/>
+                    : ' .
+                $_SESSION['nb_victoire']
+                . '
+                <span>
+            </div>
+            <div class = \'right\'>
+                <span class = \'ScorePerso\'>
+                    <img src="../ressource/image/40px-Red_heart.png"  height="25" width="25" title="Pseudo"/>
+                    ' .
+                $_SESSION['login']
+                . '
+                    <img onClick="deconnection()" style="cursor: pointer;" src="./img/exit.png" title="se déconnecter" height="20" width="20" />
+                <span>
+            </div>
+        </header>';
+        return $res;
+    }
+
+    private function partie() {
+        $pourcent = $this->nbPlayers * 25;
+        $res = $this->header() .
+                '<div class="head_underline">En attente de 4 joueurs :</div></br>
+                 <div id="barre">
+                    <div class="centre-taille40">
+                         <div class="progress ">';
+        if ($this->nbPlayers == 1) {
+            $res .='        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">1 Joueur !</span>
+                            </div>';
+        }
+        if ($this->nbPlayers == 2) {
+
+            $res .='        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">1 Joueur !</span>
+                            </div>
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">2 Joueurs !</span>
+                            </div>';
+        }
+        if ($this->nbPlayers == 3) {
+            $res .='        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">1 Joueur !</span>
+                            </div>
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">2 Joueurs !</span>
+                            </div>
+                            <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%">
+                                <span class="sr-only">3 Joueurs !</span>
+                            </div>';
+        }
+        if ($this->nbPlayers == 4) {
+            $res .= '<script>versJeux();</script>';
+        }
+        $res .='        </div>
+                    </div>
+              </div>
+              <script>actualiserJoueurs(' . $this->nbPlayers . ');</script>
+              <button type="button" onClick="retour()" class="btn btn-primary" >Quitter la partie en attente</button>';
+        return $res;
+    }
+
+    private function inscription() {
+        $res = '
         <header>
             <script type="text/JavaScript" src="./JS/Js_Connexion.js"></script>
             <table class ="right" >
@@ -55,7 +133,7 @@ class Vue {
                             <div class="control-group">
                                     <label class="control-label">Pseudo</label>
                                     <div class="controls">
-                                            <input type="text" id="log" name="user_name">
+                                            <input placeholder= \'Pseudo\' type="text" id="log" name="user_name">
                                     </div>
                                     <div style="display: none;" id="messageErrorLogin"> 
                                         </br>
@@ -67,13 +145,13 @@ class Vue {
                             <div class="control-group">
                                     <label class="control-label">Mot de passe</label>
                                     <div class="controls">
-                                            <input id="pwd" name="password" type=\'password\'>
+                                            <input placeholder= \'Mot de passe\' id="pwd" name="password" type=\'password\'>
                                     </div>
                             </div>
                             <div class="control-group">
                                     <label class="control-label">Email</label>
                                     <div class="controls">
-                                            <input type="text" id="email" name="email">
+                                            <input placeholder= \'Mail\' type="text" id="email" name="email">
                                     </div>
                             </div>
                             <div class="control-group">
@@ -90,45 +168,52 @@ class Vue {
                             <strong><span class="glyphicon glyphicon-ok" ></span> Inscription effectuée ! Vous allez être redirigé. </strong>
                         </div>
                         <div style="display: none;" class="alert alert-danger" id="messageError"> 
-                            <span class="glyphicon glyphicon-remove" ></span><strong> Erreur ! Le mot de passe ne doit pas être inférieur à 6 charactères et l\'addresse mail doit être correcte.</strong>
+                            <span class="glyphicon glyphicon-remove" ></span><strong> Erreur ! Le mot de passe ne doit pas être inférieur à 6 charactères et l\'adresse mail doit être correcte.</strong>
                         </div>
                     </div>
             </form>
         </div>';
         return $res;
     }
-    
+
     private function pagePrincipale() {
-        $res = '<header>
-            <script type="text/JavaScript" src="./JS/Js_Jeu.js"></script>
-            <div class = \'left-score\'>
-                <span class = \'ScorePerso\'>
-                    <img src=\'../ressource/image/40px-Coin.png\' title="Nombre de parties" height="25" width="25">
-                    : '. 
-                    $_SESSION['nb_partie']
-                    .'
-                <span>
-            </div>
-            <div class = \'left-score\'>
-                <span class = \'ScorePerso\'>
-                    <img src="../ressource/image/40px-Key.png" title="Nombre de victoires" height="25" width="25"/>
-                    : '. 
-                    $_SESSION['nb_victoire']
-                    .'
-                <span>
-            </div>
-            <div class = \'right\'>
-                <span class = \'ScorePerso\'>
-                    <img src="../ressource/image/40px-Red_heart.png"  height="25" width="25" title="Pseudo"/>
-                    '. 
-                    $_SESSION['login'] 
-                    .'
-                    <img onClick="deconnection()" style="cursor: pointer;" src="./img/exit.png" title="se déconnecter" height="20" width="20" />
-                <span>
-            </div>
-        </header>
-        <div>
-            
+        $res = $this->header() . '
+        <div class="bs-example">
+            <table class="table table-hover">
+                <thead>
+                    <tr>    
+                        <th colspan="2" class="head_underline">Liste de toutes les parties en attentes :</th>
+                        <th><button style="float:right;" class="btn btn-sm btn-primary" type="button" onClick="newGame()">Créer une nouvelle partie</button></th>
+                    </tr>
+                    <tr>
+                        <th class="centre">Numéro Partie</th>
+                        <th class="centre">Nombre de joueurs</th>
+                        <th class="centre">Rejoindre</th>
+                    </tr>
+                </thead>
+                <tbody>';
+        if (!empty($this->tab_partie)) {
+            foreach ($this->tab_partie as $key => $value) {
+                if ($value['nbPlayers'] < 4) {
+                    $res .= '<tr>
+                        <td style="width:33%;">' . $value['id'] . '</td>
+                        <td style="width:33%;">' . $value['nbPlayers'] . '/4 </td>
+                        <td style="width:33%;"><button class="btn btn-sm btn-success" type="button" onClick="joinGame(' . $value['id'] . ')">Join</button></td>
+                    </tr>';
+                }
+            }
+        }else{
+           $res .=' <tr>
+                        <td colspan="3" > <font color="red">Aucune partie n\'est disponible !</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" > <font color="red">Vous pouvez en créer une !</td>
+                    </tr>';
+        }
+
+        $res .= '  
+                </tbody>
+            </table>
         </div>';
         return $res;
     }
@@ -202,5 +287,4 @@ class Vue {
     }
 
 }
-
 ?>
