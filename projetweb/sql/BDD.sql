@@ -1,51 +1,40 @@
--- phpMyAdmin SQL Dump
--- version 4.0.4
--- http://www.phpmyadmin.net
---
--- Client: localhost
--- Généré le: Dim 23 Novembre 2014 à 16:25
--- Version du serveur: 5.6.12-log
--- Version de PHP: 5.4.12
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
---
--- Base de données: `projetweb`
---
-CREATE DATABASE IF NOT EXISTS `projetweb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `projetweb`;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `utilisateur`
---
-
 CREATE TABLE IF NOT EXISTS `utilisateur` (
-  `id_user` int(5) NOT NULL AUTO_INCREMENT,
+  `id_user` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `nb_victoire` int(5) NOT NULL,
   `nb_partie` int(5) NOT NULL,
   `mail` varchar(50) NOT NULL,
-  PRIMARY KEY (`id_user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `nbCards` INT,      	 	-- Nombre de cartes récupérées en jouant
+  `game_id` INT(10) UNSIGNED NULL,                -- Partie en cours
+  PRIMARY KEY (`id_user`),
+  FOREIGN KEY (game_id) REFERENCES games(id)
+);
 
---
--- Contenu de la table `utilisateur`
---
+CREATE TABLE cards (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    symbol0 INT,  -- Numéros des 8 symboles apparraissant sur la carte
+    symbol1 INT,
+    symbol2 INT,
+    symbol3 INT,
+    symbol4 INT,
+    symbol5 INT,
+    symbol6 INT,
+    symbol7 INT
+);
 
-INSERT INTO `utilisateur` (`id_user`, `login`, `password`, `nb_victoire`, `nb_partie`, `mail`) VALUES
-(1, 'Mathieu', 'Jeanmougin', 10, 10, 'jeanmougin.mat@gmail.com');
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE games (		-- Parties en cours ou en attente 
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    nbPlayers INT NOT NULL,     -- Nombre de joueurs devant participer (4 par défaut)
+    indexx INT         		-- Numéro d'ordre de la carte en haut de la pioche
+);
+
+CREATE TABLE stacks (		-- Pioche des cartes des parties
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    game_id INT NOT NULL,     	-- Identifiant de partie 
+    card_id INT NOT NULL,	-- Identifiant de carte
+    numOrder INT NOT NULL       -- Numéro d'ordre de cette carte dans cette partie
+);
 
