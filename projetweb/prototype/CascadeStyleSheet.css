@@ -90,11 +90,17 @@ header{
     margin-left: auto;
     width: 40%;
 }
-#CarteC
+
+.block
+{
+    display: block;
+}
+
+.CarteC
 {
     width: 350px;
     height: 350px;
-    display: block;
+    display: inline-block;
     margin-left: auto;
     margin-right: auto;
     margin-top: 3.5%;
@@ -103,6 +109,25 @@ header{
     border-style: solid;
     border-color: black;
     padding-top: 2%; 
+}
+
+.perso
+{
+    border-color: #3E4000;
+    background-color: #888700;
+}
+
+.Pile
+{
+    border-color: #730F0E;
+    background-color: #FF5B00;
+    
+}
+
+.adversaire
+{
+    border-color: #1D4073;
+    background-color: #5CAAFF;
 }
 
 .Icone
