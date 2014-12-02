@@ -15,8 +15,8 @@ function SendInfo()
     console.log(value);
     var my_data;
     $.ajax({
-	url: "resto.php",
-	type: "GET",
+	url: "Responses.php",
+	type: "",
 	data: { a : "value"},
         
     })
