@@ -70,13 +70,14 @@ class cards {
             $d = $query->fetch(PDO::FETCH_BOTH);
             $s = new cards();
             $s->id = $d[0];
-            $s->symbol1 = $d[1];
-            $s->symbol2 = $d[2];
-            $s->symbol3 = $d[3];
-            $s->symbol4 = $d[4];
-            $s->symbol5 = $d[5];
-            $s->symbol6 = $d[6];
-            $s->symbol7 = $d[7];
+            $s->symbol0 = $d[1];
+            $s->symbol1 = $d[2];
+            $s->symbol2 = $d[3];
+            $s->symbol3 = $d[4];
+            $s->symbol4 = $d[5];
+            $s->symbol5 = $d[6];
+            $s->symbol6 = $d[7];
+            $s->symbol7 = $d[8];
             return $s;
         } catch (PDOException $e) {
             echo("méthode insert() non implantée");
@@ -94,13 +95,15 @@ class cards {
             while ($d = $query->fetch(PDO::FETCH_BOTH)) {
                 $s = new cards();
                 $s->id = $d[0];
-                $s->symbol1 = $d[1];
-                $s->symbol2 = $d[2];
-                $s->symbol3 = $d[3];
-                $s->symbol4 = $d[4];
-                $s->symbol5 = $d[5];
-                $s->symbol6 = $d[6];
-                $s->symbol7 = $d[7];
+                $s->symbol0 = $d[1];
+                $s->symbol1 = $d[2];
+                $s->symbol2 = $d[3];
+                $s->symbol3 = $d[4];
+                $s->symbol4 = $d[5];
+                $s->symbol5 = $d[6];
+                $s->symbol6 = $d[7];
+                $s->symbol7 = $d[8];
+                $res[] = $s;
             }
             return $res;
         } catch (PDOException $e) {
