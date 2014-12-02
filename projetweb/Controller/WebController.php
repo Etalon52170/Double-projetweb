@@ -87,15 +87,39 @@ class WebController extends Controller {
             echo $view->affichageGeneral('acceuil');
         }
     }
-    
-    protected function arene()
-    {
-        $view = new view();
-        //$carte = cards::findAll();
-        $nomjoueur = Utilisateur::findByGameId(1);
+
+    protected function arene() {
+        $view = new Vue();
+
+        $nomjoueur = Utilisateur::findByGameId($_SESSION['game_id']);
         $view->listUtil = $nomjoueur;
+
+
+        $piles = stacks::CreateOrFind($_SESSION['game_id']);
+        $decks = array();
+        $id;
+        foreach ($nomjoueur as $key => $value) {
+            if ($value[1] == $_SESSION['login']) {
+                $id = $key;
+            }
+        }
+        $carte = cards::findById($piles[$id]->card_id);
+        $decks[$piles[$id]->card_id] = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
+        $j=0;
+        for ($i = 0; $i < 5; $i++) {
+            if ($id == $i) {
+                $j = $i;
+                $i++;
+            }
+            $carte = cards::findById($piles[$i]->card_id);
+            $decks[$piles[$i]->card_id] = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
+            $j++;
+        }
+        print_r($decks);
         echo $view->affichageGeneral('arene');
         //print_r($nomjoueur);
     }
+
 }
+
 ?>
