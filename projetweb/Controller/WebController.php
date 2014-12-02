@@ -5,7 +5,7 @@ include_once './Model/games.php';
 include_once 'Controller.php';
 include_once './View/Vue.php';
 include_once './Model/cards.php';
-include_once './Model/staks.php';
+include_once './Model/stacks.php';
 
 class WebController extends Controller {
 
@@ -91,9 +91,11 @@ class WebController extends Controller {
     protected function arene()
     {
         $view = new view();
-        $carte = cards::findAll();
-        
-        $nomjoueur = games::findById($_SESSION['game_id'])
+        //$carte = cards::findAll();
+        $nomjoueur = Utilisateur::findByGameId(1);
+        $view->listUtil = $nomjoueur;
+        echo $view->affichageGeneral('arene');
+        //print_r($nomjoueur);
     }
 }
 ?>

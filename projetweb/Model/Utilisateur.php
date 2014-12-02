@@ -154,7 +154,7 @@ class Utilisateur {
         }
     }
 
-    public static function updatePartie($id_user,$id_partie) {
+    public static function updatePartie($id_user, $id_partie) {
         $c = Base::getConnection();
         $query = $c->prepare("update utilisateur set  game_id= ?
                                                  where id_user = ?");
@@ -162,21 +162,20 @@ class Utilisateur {
         $query->bindParam(2, $id_user, PDO::PARAM_INT);
         return $query->execute();
     }
-    
-    public static function findByGameId ($id_Game) {
+
+    public static function findByGameId($id_Game) {
         try {
             $c = Base::getConnection();
             $query = $c->prepare("SELECT * FROM utilisateur WHERE game_id = :idGame");
             $query->bindParam(":idGame", $id_Game, PDO::PARAM_INT);
             $dbres = $query->execute();
-            $d = $query->fetch(PDO::FETCH_BOTH);
             $res = array();
             while ($d = $query->fetch(PDO::FETCH_BOTH)) {
                 $s = array();
-                $s->id_user = $d[0];
-                $s->login = $d[1];
-                $s->nbCards = $d[6];
-                $s->game_id = $d[7];
+                $s[] = $d[0]; //id_user
+                $s[] = $d[1]; //login
+                $s[] = $d[6]; //nbCards
+                $s[] = $d[7]; //game_id
                 $res[] = $s;
             }
             return $res;
