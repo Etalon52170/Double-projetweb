@@ -39,7 +39,7 @@ class Vue {
             <script type="text/JavaScript" src="./JS/Js_Jeu.js"></script>
             <div class = \'left-score\'>
                 <span class = \'ScorePerso\'>
-                    <img src=\'../ressource/image/40px-Coin.png\' title="Nombre de parties" height="25" width="25">
+                    <img src=\'./prototype/Holy_Grail_Icon.png\' title="Nombre de parties">
                     : ' .
                 $_SESSION['nb_partie']
                 . '
@@ -47,7 +47,7 @@ class Vue {
             </div>
             <div class = \'left-score\'>
                 <span class = \'ScorePerso\'>
-                    <img src="../ressource/image/40px-Key.png" title="Nombre de victoires" height="25" width="25"/>
+                    <img src="./prototype/The_D6_Icon.png" title="Nombre de victoires"/>
                     : ' .
                 $_SESSION['nb_victoire']
                 . '
@@ -55,7 +55,7 @@ class Vue {
             </div>
             <div class = \'right\'>
                 <span class = \'ScorePerso\'>
-                    <img src="../ressource/image/40px-Red_heart.png"  height="25" width="25" title="Pseudo"/>
+                    <img src="../ressource/image/40px-Red_heart.png" title="Pseudo"/>
                     ' .
                 $_SESSION['login']
                 . '
