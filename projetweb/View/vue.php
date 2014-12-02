@@ -4,11 +4,14 @@ class Vue {
 
     public $nbPlayers;
     public $tab_partie;
+    public $listStack;
+    public $listUtil;
     protected $tabSelecteur = array(
         'acceuil' => 'acceuilpage',
         'jeux' => 'pagePrincipale',
         'inscri' => 'inscription',
-        'partie' => 'partie'
+        'partie' => 'partie',
+        'arene' => 'arene'
     );
 
     public function __construct() {
@@ -33,9 +36,68 @@ class Vue {
         throw new Exception($emess, 45);
     }
 
+    private function arene() {
+        $res = $this->header() .
+                '<div><legend>Score des joueurs</legend>';
+        foreach ($this->listUtil as $key => $value) {
+            $res .= '<span class ="ScorePartie">' . $value[1] . '
+                            : 0
+                        </span>';
+        }
+        $res .= '</div><legend>Partie</legend>';
+        $i = 0;
+        foreach ($this->listStack as $id => $listSymbol) {
+            if ($i == 1) {
+                $res .= '<div id="CarteC" >';
+                foreach ($listSymbol as $key => $value) {
+                    $res .= '<p class = \'Icone\'>
+                            <img src="../ressource/image/0'.$value.'.png" alt=""/>
+                        </p>';
+                }
+                $res .= '</div>';
+            } elseif ($i == 2) {
+                $res .= '<div id="CarteC" style="float:left">';
+                foreach ($listSymbol as $key => $value) {
+                    $res .= '<p class = \'Icone\'>
+                                <img src="../ressource/image/0'.$value.'.png" alt=""/>
+                            </p>';
+                }
+                $res .= '</div>';
+            } elseif ($i == 4) {
+
+                $res .= '<div id="CarteC" style="float:center">';
+                foreach ($listSymbol as $key => $value) {
+                    $res .= '<p class = \'Icone\'>
+                            <img src="../ressource/image/0'.$value.'.png" alt=""/>
+                        </p>';
+                }
+                $res .= '</div>';
+            } elseif ($i == 3) {
+                $res .= '<div id="CarteC" style="">';
+                foreach ($listSymbol as $key => $value) {
+                    $res .= '<p class = \'Icone\'>
+                                <img src="../ressource/image/0'.$value.'.png" alt=""/>
+                            </p>';
+                }
+                $res .= '</div>';
+            } elseif ($i == 0) {
+                $res .= '<div id="CarteC" style="float:center">';
+                foreach ($listSymbol as $key => $value) {
+                    $res .= '<p class = \'Icone Cperso\' id=' . $value . '>
+                            <img src="../ressource/image/0'.$value.'.png" alt=""/>
+                        </p>';
+                }
+                $res .= '</div>';
+            }
+            $i++;
+        }
+        return $res;
+    }
+
     private function header() {
         $res = '
         <header>
+        <script src="./bootstrap/js/jquery-1.11.0.min.js"></script>
             <script type="text/JavaScript" src="./JS/Js_Jeu.js"></script>
             <div class = \'left-score\'>
                 <span class = \'ScorePerso\'>
@@ -55,7 +117,7 @@ class Vue {
             </div>
             <div class = \'right\'>
                 <span class = \'ScorePerso\'>
-                    <img src="../ressource/image/40px-Red_heart.png" title="Pseudo"/>
+                    <img src="../ressource/image/027.png" title="Pseudo"/>
                     ' .
                 $_SESSION['login']
                 . '
@@ -202,8 +264,8 @@ class Vue {
                     </tr>';
                 }
             }
-        }else{
-           $res .=' <tr>
+        } else {
+            $res .=' <tr>
                         <td colspan="3" > <font color="red">Aucune partie n\'est disponible !</td>
                     </tr>
                     <tr>
