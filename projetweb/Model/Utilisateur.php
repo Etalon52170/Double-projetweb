@@ -162,6 +162,29 @@ class Utilisateur {
         $query->bindParam(2, $id_user, PDO::PARAM_INT);
         return $query->execute();
     }
+    
+    public static function findByGameId ($id_Game) {
+        try {
+            $c = Base::getConnection();
+            $query = $c->prepare("SELECT * FROM utilisateur WHERE game_id = :idGame");
+            $query->bindParam(":idGame", $id_Game, PDO::PARAM_INT);
+            $dbres = $query->execute();
+            $d = $query->fetch(PDO::FETCH_BOTH);
+            $res = array();
+            while ($d = $query->fetch(PDO::FETCH_BOTH)) {
+                $s = array();
+                $s->id_user = $d[0];
+                $s->login = $d[1];
+                $s->nbCards = $d[6];
+                $s->game_id = $d[7];
+                $res[] = $s;
+            }
+            return $res;
+        } catch (PDOException $e) {
+            echo("méthode insert() non implantée");
+            return null;
+        }
+    }
 
 }
 

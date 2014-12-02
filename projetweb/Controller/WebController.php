@@ -4,13 +4,16 @@ include_once './Model/Utilisateur.php';
 include_once './Model/games.php';
 include_once 'Controller.php';
 include_once './View/Vue.php';
+include_once './Model/cards.php';
+include_once './Model/staks.php';
 
 class WebController extends Controller {
 
     public function __construct() {
         $this->actionlist = array('jeux' => 'afficheJeux',
             'inscri' => 'inscription',
-            'partie' => 'partie');
+            'partie' => 'partie',
+            'arene' => 'arene');
     }
 
     protected function afficheJeux() {
@@ -84,7 +87,13 @@ class WebController extends Controller {
             echo $view->affichageGeneral('acceuil');
         }
     }
-
+    
+    protected function arene()
+    {
+        $view = new view();
+        $carte = cards::findAll();
+        
+        $nomjoueur = games::findById($_SESSION['game_id'])
+    }
 }
-
 ?>

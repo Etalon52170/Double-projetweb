@@ -86,7 +86,7 @@ function stateChangedActualiserJoueurs()
 }
 
 function versJeux() {
-    location.href = "./index.php?a=jeux";
+    location.href = "./index.php?a=arene";
 }
 
 function retour() {
