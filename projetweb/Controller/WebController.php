@@ -92,9 +92,6 @@ class WebController extends Controller {
         $view = new Vue();
 
         $nomjoueur = Utilisateur::findByGameId($_SESSION['game_id']);
-        $view->listUtil = $nomjoueur;
-
-
         $piles = stacks::CreateOrFind($_SESSION['game_id']);
         $decks = array();
         $id;
@@ -115,7 +112,8 @@ class WebController extends Controller {
             $decks[$piles[$i]->card_id] = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
             $j++;
         }
-        print_r($decks);
+        $view->listStack = $decks;
+        $view->listUtil = $nomjoueur;
         echo $view->affichageGeneral('arene');
         //print_r($nomjoueur);
     }
