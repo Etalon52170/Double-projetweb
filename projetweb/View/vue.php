@@ -48,7 +48,8 @@ class Vue {
         $i = 0;
         foreach ($this->listStack as $id => $listSymbol) {
             if ($i == 1) {
-                $res .= '<div id="CarteC" >';
+                $res .= '<div id="block">';
+                $res .= '<div class = "CarteC adversaire">';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone\'>
                             <img src="../ressource/image/0'.$value.'.png" alt=""/>
@@ -56,37 +57,40 @@ class Vue {
                 }
                 $res .= '</div>';
             } elseif ($i == 2) {
-                $res .= '<div id="CarteC" style="float:left">';
+                $res .= '<div class = "CarteC adversaire">';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone\'>
                                 <img src="../ressource/image/0'.$value.'.png" alt=""/>
                             </p>';
                 }
                 $res .= '</div>';
-            } elseif ($i == 4) {
-
-                $res .= '<div id="CarteC" style="float:center">';
+            } elseif ($i == 3) {
+                $res .= '<div class = "CarteC adversaire">';
+                foreach ($listSymbol as $key => $value) {
+                    $res .= '<p class = \'Icone\'>
+                                <img src="../ressource/image/0'.$value.'.png" alt=""/>
+                            </p>';
+                }
+                $res .= '</div>';
+                $res .= '</div>';
+            } 
+            elseif ($i == 4) {
+                $res .= '<div id="block">';
+                $res .= '<div class = "CarteC Pile" >';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone\'>
                             <img src="../ressource/image/0'.$value.'.png" alt=""/>
                         </p>';
                 }
                 $res .= '</div>';
-            } elseif ($i == 3) {
-                $res .= '<div id="CarteC" style="">';
-                foreach ($listSymbol as $key => $value) {
-                    $res .= '<p class = \'Icone\'>
-                                <img src="../ressource/image/0'.$value.'.png" alt=""/>
-                            </p>';
-                }
-                $res .= '</div>';
             } elseif ($i == 0) {
-                $res .= '<div id="CarteC" style="float:center">';
+                $res .= '<div class = "CarteC perso">';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone Cperso\' id=' . $value . '>
                             <img src="../ressource/image/0'.$value.'.png" alt=""/>
                         </p>';
                 }
+                $res .= '</div>';
                 $res .= '</div>';
             }
             $i++;
