@@ -45,19 +45,22 @@ class Vue {
                         </span>';
         }
         $res .= '</div><legend>Partie</legend>';
-        $ordre = array(1,2,3,4,0);
+       // $ordre = array(1,2,3,4,0);
         $i = 0;
+        
+        print_r($this->listStack);
         foreach ($this->listStack as $id => $listSymbol) {
-            if ($ordre[$i] == 1) {
+            //echo $ordre[$i];
+            if ($i == 1) {
                 $res .= '<div id="block">';
                 $res .= '<div class = "CarteC adversaire">';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone\'>
                             <img src="../ressource/image/0'.$value.'.png" alt=""/>
-                        </p>';
+   --                     </p>';
                 }
                 $res .= '</div>';
-            } elseif ($ordre[$i] == 2) {
+            } elseif ($i == 2) {
                 $res .= '<div class = "CarteC adversaire">';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone\'>
@@ -65,7 +68,7 @@ class Vue {
                             </p>';
                 }
                 $res .= '</div>';
-            } elseif ($ordre[$i] == 3) {
+            } elseif ($i == 3) {
                 $res .= '<div class = "CarteC adversaire">';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone\'>
@@ -75,7 +78,7 @@ class Vue {
                 $res .= '</div>';
                 $res .= '</div>';
             } 
-            elseif ($ordre[$i] == 4) {
+            elseif ($i == 4) {
                 $res .= '<div id="block">';
                 $res .= '<div class = "CarteC Pile" >';
                 foreach ($listSymbol as $key => $value) {
@@ -84,7 +87,7 @@ class Vue {
                         </p>';
                 }
                 $res .= '</div>';
-            } elseif ($ordre[$i] == 0) {
+            } elseif ($i == 0) {
                 $res .= '<div class = "CarteC perso">';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone Cperso\' id=' . $value . '>
