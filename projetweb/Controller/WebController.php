@@ -101,20 +101,23 @@ class WebController extends Controller {
             }
         }
         $carte = cards::findById($piles[$id]->card_id);
-        $symbole = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
-        shuffle($symbole);
-        $decks[$piles[$id]->card_id] = $symbole;
-        $j=0;
-        for ($i = 0; $i < 5; $i++) {
+        $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
+        //shuffle($symbole);
+        $decks[0] = $symbole;
+        $carte = cards::findById($piles[4]->card_id);
+        $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
+        $decks[1] = $symbole;
+        $j = 2;
+        for ($i = 0; $i < 4; $i++) {
             if ($id == $i) {
-                $j = $i;
-                $i++;
+                
+            } else {
+                $carte = cards::findById($piles[$i]->card_id);
+                $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
+                //shuffle($symbole);
+                $decks[$j] = $symbole;
+                $j++;
             }
-            $carte = cards::findById($piles[$i]->card_id);
-            $symbole = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
-            shuffle($symbole);
-            $decks[$piles[$i]->card_id] = $symbole;
-            $j++;
         }
         $view->listStack = $decks;
         $view->listUtil = $nomjoueur;
