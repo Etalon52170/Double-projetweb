@@ -101,7 +101,9 @@ class WebController extends Controller {
             }
         }
         $carte = cards::findById($piles[$id]->card_id);
-        $decks[$piles[$id]->card_id] = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
+        $symbole = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
+        shuffle($symbole);
+        $decks[$piles[$id]->card_id] = $symbole;
         $j=0;
         for ($i = 0; $i < 5; $i++) {
             if ($id == $i) {
@@ -109,7 +111,9 @@ class WebController extends Controller {
                 $i++;
             }
             $carte = cards::findById($piles[$i]->card_id);
-            $decks[$piles[$i]->card_id] = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
+            $symbole = array($carte->symbol0, $carte->symbol1 , $carte->symbol2 , $carte->symbol3, $carte->symbol4,  $carte->symbol5,$carte->symbol6,$carte->symbol7);
+            shuffle($symbole);
+            $decks[$piles[$i]->card_id] = $symbole;
             $j++;
         }
         $view->listStack = $decks;
