@@ -162,7 +162,7 @@ class stacks {
 
     public static function shuffle() {
         $t = array();
-        for ($i = 0; $i < 57; $i++) {
+        for ($i = 1; $i <= 57; $i++) {
             $t[] = $i;
         }
         shuffle($t);
