@@ -132,6 +132,18 @@ class stacks {
                     $stacks->insert();
                     $res[] = $stacks;
                 }
+                //affecter les index des cartes
+                $game = games::findById($_SESSION['game_id']);
+                if ($game->indexx == NULL)
+                {
+                    games::Index($_SESSION['game_id'],5);
+                }
+                $user = Utilisateur::findByGameId($_SESSION['game_id']);
+                $i = 1;
+                foreach ($user as $key => $value) {
+                    Utilisateur::updateIndexx($value[0], $i);
+                    $i ++;
+                }
             }
             return $res;
         } catch (PDOException $e) {
