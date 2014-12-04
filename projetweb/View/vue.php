@@ -57,7 +57,7 @@ class Vue {
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone\'>
                             <img src="../ressource/image/0'.$value.'.png" alt=""/>
-   --                     </p>';
+                   </p>';
                 }
                 $res .= '</div>';
             } elseif ($i == 3) {
