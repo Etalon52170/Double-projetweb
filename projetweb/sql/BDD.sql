@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS `utilisateur` (
   `nb_partie` int(5) NOT NULL,
   `mail` varchar(50) NOT NULL,
   `nbCards` INT,      	 	-- Nombre de cartes récupérées en jouant
+  `indexx` INT,                     -- Carte courant du stack
   `game_id` INT(10) UNSIGNED NULL,                -- Partie en cours
   PRIMARY KEY (`id_user`),
   FOREIGN KEY (game_id) REFERENCES games(id)
