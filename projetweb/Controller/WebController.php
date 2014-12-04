@@ -102,7 +102,7 @@ class WebController extends Controller {
         }
         $carte = cards::findById($piles[$id]->card_id);
         $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
-        //shuffle($symbole);
+        shuffle($symbole);
         $decks[0] = $symbole;
         $carte = cards::findById($piles[4]->card_id);
         $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
