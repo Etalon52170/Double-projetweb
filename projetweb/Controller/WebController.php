@@ -100,30 +100,34 @@ class WebController extends Controller {
                 $id = $key;
             }
         }
-        $carte = cards::findById($piles[$id]->card_id);
+        
+        $me = Utilisateur::findById($_SESSION['id_user']);
+        $carte = cards::findById($piles[$me->indexx]->card_id);
         $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
         shuffle($symbole);
         $decks[0] = $symbole;
-        $carte = cards::findById($piles[4]->card_id);
+        
+        $game = games::findById($_SESSION['game_id']);
+        $carte = cards::findById($game->indexx);
         $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
+        shuffle($symbole);
         $decks[1] = $symbole;
+        
+        $users = Utilisateur::findByGameId($_SESSION['game_id']);
+        
         $j = 2;
-        for ($i = 0; $i < 4; $i++) {
-            if ($id == $i) {
-                
-            } else {
-                $carte = cards::findById($piles[$i]->card_id);
+        foreach ($users as $key => $value) {
+           if ($value[0] != $_SESSION['id_user'])
+           {
+               echo 'not me ';
+               $carte = cards::findById($piles[$value[3]]->card_id);
                 $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
                 //shuffle($symbole);
                 $decks[$j] = $symbole;
                 $j++;
-            }
+           }
         }
-        $game = games::findById($_SESSION['game_id']);
-        if ($game->indexx == NULL)
-        {
-            games::Index($_SESSION['game_id'],5);
-        }
+        
         $view->listStack = $decks;
         $view->listUtil = $nomjoueur;
         echo $view->affichageGeneral('arene');
