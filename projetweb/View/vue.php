@@ -259,9 +259,11 @@ class Vue {
                 </thead>
                 <tbody>';
         $message_vide = false;
+        $message_plein = false;
         if (!empty($this->tab_partie)) {
             foreach ($this->tab_partie as $key => $value) {
                 if ($value['nbPlayers'] < 4) {
+                    $message_plein = true;
                     $res .= '<tr>
                         <td style="width:33%;">' . $value['id'] . '</td>
                         <td style="width:33%;">' . $value['nbPlayers'] . '/4 </td>
@@ -274,7 +276,7 @@ class Vue {
         } else {
             $message_vide = true;
         }
-        if($message_vide){
+        if($message_vide && !$message_plein){
              $res .=' <tr>
                         <td colspan="3" > <font color="red">Aucune partie n\'est disponible !</td>
                     </tr>
