@@ -28,6 +28,7 @@ function connexion() {
         $_SESSION['nb_victoire'] = $user->nb_victoire;
         $_SESSION['mail'] = $user->mail;
         $_SESSION['nbCards'] = $user->nbCards;
+        $_SESSION['indexx'] = $user->indexx;
         $_SESSION['game_id'] = $user->game_id;
         $res['find'] = 'ok';
     } else {
@@ -58,6 +59,7 @@ function inscription() {
         $user->nb_partie = 0;
         $user->mail = $email;
         $user->nbCards = 0;
+        $user->indexx = NULL;
         $user->insert();
     }
     $res = array('inscri' => $res);
