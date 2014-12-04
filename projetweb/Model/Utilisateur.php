@@ -11,6 +11,7 @@ class Utilisateur {
     private $nb_partie;
     private $mail;
     private $nbCards;
+    private $indexx;
     private $game_id;
 
     public function __construct() {
@@ -40,7 +41,7 @@ class Utilisateur {
         try {
             $db = Base::getConnection();
             $insert_query = "INSERT INTO utilisateur (login,password,nb_victoire,nb_partie,mail,nbCards,game_id) "
-                    . "VALUES (:login, :password, :nb_victoire, :nb_partie, :mail, :nbCards, :game_id)";
+                    . "VALUES (:login, :password, :nb_victoire, :nb_partie, :mail, :nbCards, :indexx, :game_id)";
             $query = $db->prepare($insert_query);
             $query->bindParam(":login", $this->login, PDO::PARAM_STR);
             $query->bindParam(":password", $this->password, PDO::PARAM_STR);
@@ -48,6 +49,7 @@ class Utilisateur {
             $query->bindParam(":nb_partie", $this->nb_partie, PDO::PARAM_INT);
             $query->bindParam(":mail", $this->mail, PDO::PARAM_STR);
             $query->bindParam(":nbCards", $this->nbCards, PDO::PARAM_INT);
+            $query->bindParam(":indexx", $this->indexx, PDO::PARAM_INT);
             $query->bindParam(":game_id", $this->game_id, PDO::PARAM_INT);
             $a = $query->execute();
             $this->id_user = $db->LastInsertId();
@@ -73,7 +75,8 @@ class Utilisateur {
             $s->nb_partie = $d[4];
             $s->mail = $d[5];
             $s->nbCards = $d[6];
-            $s->game_id = $d[7];
+            $s->indexx = $d[7];
+            $s->game_id = $d[8];
             return $s;
         } catch (PDOException $e) {
             echo("méthode insert() non implantée");
@@ -97,7 +100,8 @@ class Utilisateur {
                 $s->nb_partie = $d[4];
                 $s->mail = $d[5];
                 $s->nbCards = $d[6];
-                $s->game_id = $d[7];
+                $s->indexx = $d[7];
+                $s->game_id = $d[8];
                 $res[] = $s;
             }
             return $res;
@@ -123,7 +127,8 @@ class Utilisateur {
             $s->nb_partie = $d[4];
             $s->mail = $d[5];
             $s->nbCards = $d[6];
-            $s->game_id = $d[7];
+            $s->indexx = $d[7];
+            $s->game_id = $d[8];
             return $s;
         } catch (PDOException $e) {
             echo("méthode insert() non implantée");
@@ -146,7 +151,8 @@ class Utilisateur {
             $s->nb_partie = $d[4];
             $s->mail = $d[5];
             $s->nbCards = $d[6];
-            $s->game_id = $d[7];
+            $s->indexx = $d[7];
+            $s->game_id = $d[8];
             return $s;
         } catch (PDOException $e) {
             echo("méthode insert() non implantée");
@@ -154,6 +160,16 @@ class Utilisateur {
         }
     }
 
+    public static function updateIndexx($id_user, $indexx) {
+        $c = Base::getConnection();
+        echo $id_user." ".$indexx;
+        $query = $c->prepare("update utilisateur set  indexx= ?
+                                                 where id_user = ?");
+        $query->bindParam(1, $indexx, PDO::PARAM_INT);
+        $query->bindParam(2, $id_user, PDO::PARAM_INT);
+        return $query->execute();
+    }
+    
     public static function updatePartie($id_user, $id_partie) {
         $c = Base::getConnection();
         $query = $c->prepare("update utilisateur set  game_id= ?
@@ -175,7 +191,8 @@ class Utilisateur {
                 $s[] = $d[0]; //id_user
                 $s[] = $d[1]; //login
                 $s[] = $d[6]; //nbCards
-                $s[] = $d[7]; //game_id
+                $s[] = $d[7]; //Index de la carte du joueur
+                $s[] = $d[8]; //game_id
                 $res[] = $s;
             }
             return $res;
