@@ -29,7 +29,7 @@ class games {
             echo ($emess);
         }
     }
-
+    
     public function insert() {
 
         try {
@@ -49,22 +49,13 @@ class games {
         return $this->id;
     }
 
-    public static function findById($id) {
-        try {
-            $c = Base::getConnection();
-            $query = $c->prepare("SELECT * FROM games WHERE id = :id ");
-            $query->bindParam(":id", $id, PDO::PARAM_INT);
-            $dbres = $query->execute();
-            $d = $query->fetch(PDO::FETCH_BOTH);
-            $s = new games();
-            $s->id = $d[0];
-            $s->nbPlayers = $d[1];
-            $s->indexx = $d[2];
-            return $s;
-        } catch (PDOException $e) {
-            echo("méthode insert() non implantée");
-            return null;
-        }
+    public static function Index($id_partie, $value) {
+        $c = Base::getConnection();
+        $query = $c->prepare("update games set indexx= ?
+                                               where id = ?");
+        $query->bindParam(1, $value, PDO::PARAM_INT);
+        $query->bindParam(2, $id_partie, PDO::PARAM_INT);
+        return $query->execute();
     }
 
     public static function findAll() {
@@ -87,6 +78,26 @@ class games {
             return null;
         }
     }
+    
+    public static function findById($id) {
+        try {
+            $c = Base::getConnection();
+            $query = $c->prepare("SELECT * FROM games WHERE id = :id ");
+            $query->bindParam(":id", $id, PDO::PARAM_INT);
+            $dbres = $query->execute();
+            $d = $query->fetch(PDO::FETCH_BOTH);
+            $s = new games();
+            $s->id = $d[0];
+            $s->nbPlayers = $d[1];
+            $s->indexx = $d[2];
+            return $s;
+        } catch (PDOException $e) {
+            echo("méthode insert() non implantée");
+            return null;
+        }
+    }  
+        
+        
 
     public static function incrementGame($id_partie, $nbPlayers) {
         $c = Base::getConnection();
