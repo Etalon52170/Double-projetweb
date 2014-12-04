@@ -259,6 +259,7 @@ class Vue {
                     </tr>
                 </thead>
                 <tbody>';
+        $message_vide = false;
         if (!empty($this->tab_partie)) {
             foreach ($this->tab_partie as $key => $value) {
                 if ($value['nbPlayers'] < 4) {
@@ -267,10 +268,15 @@ class Vue {
                         <td style="width:33%;">' . $value['nbPlayers'] . '/4 </td>
                         <td style="width:33%;"><button class="btn btn-sm btn-success" type="button" onClick="joinGame(' . $value['id'] . ')">Join</button></td>
                     </tr>';
+                }else{
+                  $message_vide = true;
                 }
             }
         } else {
-            $res .=' <tr>
+            $message_vide = true;
+        }
+        if($message_vide){
+             $res .=' <tr>
                         <td colspan="3" > <font color="red">Aucune partie n\'est disponible !</td>
                     </tr>
                     <tr>
@@ -279,8 +285,8 @@ class Vue {
         }
 
         $res .= '  
-                </tbody>
-            </table>
+                </table>
+            </tbody>
         </div>';
         return $res;
     }
