@@ -15,6 +15,18 @@ function validerConnexion() {
 
 }
 
+function EntreeInscription(){
+    var code = window.event.keyCode;
+    if(code === 13){
+        inscription();
+    }
+}
+function Entree(){
+    var code = window.event.keyCode;
+    if (code === 13 ){
+        validerConnexion();
+    }
+}
 function GetXmlHttpObject()
 {
     var xmlhttpreq = null;
