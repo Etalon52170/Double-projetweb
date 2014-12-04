@@ -75,7 +75,8 @@ function stateChangedActualiserJoueurs()
                     actualiserJoueurs(nbplayers);
                 }, 1000);
             } else {
-                window.location.href = "./index.php?a=jeux";
+                alert('test');
+                window.location.href = "./index.php?a=arene";
             }
         } else {
             setTimeout(function() {
