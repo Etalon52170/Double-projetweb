@@ -119,6 +119,11 @@ class WebController extends Controller {
                 $j++;
             }
         }
+        $game = games::findById($_SESSION['game_id']);
+        if ($game->indexx == NULL)
+        {
+            games::Index($_SESSION['game_id'],5);
+        }
         $view->listStack = $decks;
         $view->listUtil = $nomjoueur;
         echo $view->affichageGeneral('arene');
