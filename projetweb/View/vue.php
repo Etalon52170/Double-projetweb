@@ -39,7 +39,9 @@ class Vue {
 
     private function arene() {
         $res = $this->header() .
-                '<div id="ActuJeu"><div><legend>Score des joueurs</legend>';
+                '<div id="ActuJeu"><div><legend>Score des joueurs</legend><div class="play">Play</div>
+
+<div class="pause">Stop</div>';
         foreach ($this->listUtil as $key => $value) {
             $res .= '<span class ="ScorePartie">' . $value[1] . '
                             : 0

@@ -44,8 +44,15 @@ function connexion() {
 
 function deconnection() {
     $res = session_destroy();
-    $res = array('deco' => $res);
-    echo(json_encode($res));
+    actualiserJoueurs();
+    $nbjoueurs = games::findById($_SESSION['game_id']);
+    if($nbjoueurs->nbPlayers == 1){
+        $nbjoueurs->delete();
+    }else{
+        $nb_end = $nbjoueurs->nbPlayers -1;
+        games::incrementGame($_SESSION['game_id'], $nb_end);
+    }
+    Utilisateur::updatePartie($_SESSION['id_user'], NULL);
 }
 
 function inscription() {
@@ -73,6 +80,16 @@ function inscription() {
 
 function actualiserJoueurs() {
     $nbPlayers = (isset($_POST['nbPlayers'])) ? $_POST['nbPlayers'] : "";
+    session_write_close();
+    $compteur=0;
+    while (games::findById($_SESSION['game_id'])->nbPlayers == $nbPlayers) {
+        usleep(500000);
+        $compteur++;
+        if ($compteur > 50) {
+            $res = array('code' => "relance");
+            break;
+        }
+    }
     $game = games::findById($_SESSION['game_id']);
     if ($nbPlayers != $game->nbPlayers) {
         $code = '<div class="centre-taille40">
@@ -102,17 +119,19 @@ function actualiserJoueurs() {
                                 <span class="sr-only">3 Joueurs !</span>
                             </div>';
         }
+        if($game->nbPlayers == 4){
+            $code .='<script>versJeux();</script>';
+        }
         $code .='</div></div>';
         $res = array('nbJoueurs' => $game->nbPlayers,
             'code' => $code);
-        echo(json_encode($res));
     }
+    echo(json_encode($res));
 }
 
 function actualiserJeu() {
     $index_courant = (isset($_POST['ind'])) ? $_POST['ind'] : "";
     $compteur = 0;
-    $_COOKIE = $_SESSION;
     session_write_close();
     while (games::findById($_SESSION['game_id'])->indexx == $index_courant) {
         usleep(500000);
@@ -262,15 +281,15 @@ function checkSymbol() {
                 $id = $game->indexx;
                 //on augmente le nb de points du joueurs de 1
                 $nb_pts = $user->nbCards + 1;
-                $sth = $db->exec("update utilisateur set  nbCards= ".$nb_pts."
-                                                 where id_user =".$_SESSION['id_user']);
+                $sth = $db->exec("update utilisateur set  nbCards= " . $nb_pts . "
+                                                 where id_user =" . $_SESSION['id_user']);
                 //on change sa carte
-                $sth = $db->exec("update utilisateur set  indexx=".$game->indexx."
-                                                 where id_user =".$_SESSION['id_user']);
+                $sth = $db->exec("update utilisateur set  indexx=" . $game->indexx . "
+                                                 where id_user =" . $_SESSION['id_user']);
                 //on change la pioche
                 $new_index = $game->indexx + 1;
-                $sth = $db->exec("update games set indexx=".$new_index."
-                                               where id =".$_SESSION['game_id']);
+                $sth = $db->exec("update games set indexx=" . $new_index . "
+                                               where id =" . $_SESSION['game_id']);
                 $new_id = $id + 1;
                 //on test si l'index n'a pas évolué entre temps sinon on rollback
                 if (games::findById($_SESSION['game_id'])->indexx != $new_id) {

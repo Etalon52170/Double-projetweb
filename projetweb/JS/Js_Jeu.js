@@ -30,7 +30,7 @@ function stateChanged()
     var json;
     if (XmlHttp.readyState == 4) {
         json = JSON.parse(XmlHttp.responseText);
-        if (json.deco) {
+        if (json != '') {
             window.location.href = "./index.php";
         } else {
             alert("La deconnexion n'est pas possible !")
@@ -55,7 +55,7 @@ function actualiserJoueurs(nbjoueurs) {
         alert("Objets HTTP non supportés");
     } else {
         XmlHttp.onreadystatechange = stateChangedActualiserJoueurs;
-        XmlHttp.open("POST", "./Controller/ReponsesAjax.php", false);
+        XmlHttp.open("POST", "./Controller/ReponsesAjax.php", true);
         XmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         XmlHttp.send(param);
     }
@@ -65,9 +65,8 @@ function stateChangedActualiserJoueurs()
 {
     var json;
     if (XmlHttp.readyState == 4) {
-        json = XmlHttp.responseText;
-        if (json != "") {
-            json = JSON.parse(XmlHttp.responseText);
+        json = JSON.parse(XmlHttp.responseText);
+        if (json.code != "relance") {
             if (json.nbJoueurs < 4) {
                 window.document.getElementById("barre").innerHTML = json.code;
                 nbplayers = json.nbJoueurs;
@@ -75,13 +74,26 @@ function stateChangedActualiserJoueurs()
                     actualiserJoueurs(nbplayers);
                 }, 1000);
             } else {
-                alert('test');
                 window.location.href = "./index.php?a=arene";
             }
         } else {
-            setTimeout(function() {
-                actualiserJoueurs(nbplayers);
-            }, 1000);
+            actualiserJoueurs(nbplayers);
+        }
+    }
+}
+
+function stateChangedActualiserJeu() {
+    var json;
+    if (requete.readyState == 4) {
+        json = JSON.parse(requete.responseText);
+        if (json.code != "relance") {
+            //mettre un truc comme quoi tu as gagné
+            window.document.getElementById("ActuJeu").innerHTML = json.code;
+            actualiserJeu(json.new_ind);
+            ajouteJS();
+        } else {
+            //mettre un truc comme quoi tu as perdu
+            actualiserJeu(index);
         }
     }
 }
@@ -135,6 +147,13 @@ function stateChangedCheckSymbol() {
         json = JSON.parse(XmlHttp.responseText);
         if (json.code != "relance") {
             //mettre un truc comme quoi tu as gagné
+            var audioElement = document.createElement('audio');
+            audioElement.setAttribute('src', 'Monster.mp3');
+            $.get();
+            audioElement.addEventListener("load", function() {
+                audioElement.play();
+            }, true);
+            audioElement.play();
             window.document.getElementById("ActuJeu").innerHTML = json.code;
             actualiserJeu(json.new_ind);
             ajouteJS();
@@ -146,9 +165,9 @@ function stateChangedCheckSymbol() {
 }
 var index;
 var requete;
-function actualiserJeu(index_courant){
+function actualiserJeu(index_courant) {
     index = index_courant;
-    var param = "action=actuJeu&ind="+index_courant;
+    var param = "action=actuJeu&ind=" + index_courant;
     requete = GetXmlHttpObject();
     if (requete == null) {
         alert("Objets HTTP non supportés");
@@ -222,9 +241,24 @@ $(document).ready(function() {
     $('p.Cperso').mouseover(hoverDiv);
     $('p.Cperso').mouseleave(leaveDiv);
     $('p.Cperso').click(SendInfo);
+    /*
+     
+     $.get();
+     
+     audioElement.addEventListener("load", function() {
+     audioElement.play();
+     }, true);
+     
+     $('.play').click(function() {
+     audioElement.play();
+     });
+     
+     $('.pause').click(function() {
+     audioElement.pause();
+     });*/
     //$('button#hide').click(switch1);
     //$('button#add').click(addvanish);
 }
-        
+
 );
 
