@@ -89,49 +89,53 @@ class WebController extends Controller {
     }
 
     protected function arene() {
+        //créé les stacks si ils ne le sont pas !
+        stacks::CreateOrFind($_SESSION['game_id']);
+        
         $view = new Vue();
-
-        $nomjoueur = Utilisateur::findByGameId($_SESSION['game_id']);
-        $piles = stacks::CreateOrFind($_SESSION['game_id']);
+        $list_user = Utilisateur::findByGameId($_SESSION['game_id']);
         $decks = array();
         $id;
-        foreach ($nomjoueur as $key => $value) {
+        foreach ($list_user as $key => $value) {
             if ($value[1] == $_SESSION['login']) {
                 $id = $key;
             }
         }
-        
+        //on ajoute les symboles du joueur connecté dans l'array en position 0
         $me = Utilisateur::findById($_SESSION['id_user']);
-        $carte = cards::findById($piles[$me->indexx]->card_id);
+        $stack = stacks::findByOrder($me->indexx);
+        $carte = cards::findById($stack->card_id);
         $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
         shuffle($symbole);
         $decks[0] = $symbole;
-        
+
+
+        //on ajoute la pioche à la place 1 dans l'array
         $game = games::findById($_SESSION['game_id']);
-        $carte = cards::findById($game->indexx);
+        $stack = stacks::findByOrder($game->indexx);
+        $carte = cards::findById($stack->card_id);
         $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
         shuffle($symbole);
         $decks[1] = $symbole;
-        
+
         $users = Utilisateur::findByGameId($_SESSION['game_id']);
-        
         $j = 2;
         foreach ($users as $key => $value) {
-           if ($value[0] != $_SESSION['id_user'])
-           {
-               echo 'not me ';
-               $carte = cards::findById($piles[$value[3]]->card_id);
+            //si c'est un adverse alors on le met dans une array à la place 2-3-4
+            if ($value[0] != $_SESSION['id_user']) {
+                $stack = stacks::findByOrder($value[3]);
+                $carte = cards::findById($stack->card_id);
                 $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
-                //shuffle($symbole);
+                shuffle($symbole);
                 $decks[$j] = $symbole;
                 $j++;
-           }
+            }
         }
-        
+
+        $view->index_courant = $game->indexx;
         $view->listStack = $decks;
-        $view->listUtil = $nomjoueur;
+        $view->listUtil = $list_user;
         echo $view->affichageGeneral('arene');
-        //print_r($nomjoueur);
     }
 
 }

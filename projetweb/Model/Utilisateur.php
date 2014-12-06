@@ -40,7 +40,7 @@ class Utilisateur {
 
         try {
             $db = Base::getConnection();
-            $insert_query = "INSERT INTO utilisateur (login,password,nb_victoire,nb_partie,mail,nbCards,game_id) "
+            $insert_query = "INSERT INTO utilisateur (login,password,nb_victoire,nb_partie,mail,nbCards,indexx,game_id) "
                     . "VALUES (:login, :password, :nb_victoire, :nb_partie, :mail, :nbCards, :indexx, :game_id)";
             $query = $db->prepare($insert_query);
             $query->bindParam(":login", $this->login, PDO::PARAM_STR);
@@ -175,6 +175,15 @@ class Utilisateur {
         $query = $c->prepare("update utilisateur set  game_id= ?
                                                  where id_user = ?");
         $query->bindParam(1, $id_partie, PDO::PARAM_INT);
+        $query->bindParam(2, $id_user, PDO::PARAM_INT);
+        return $query->execute();
+    }
+    
+    public static function updatePoint($id_user, $nbPoint) {
+        $c = Base::getConnection();
+        $query = $c->prepare("update utilisateur set  nbCards= ?
+                                                 where id_user = ?");
+        $query->bindParam(1, $nbPoint, PDO::PARAM_INT);
         $query->bindParam(2, $id_user, PDO::PARAM_INT);
         return $query->execute();
     }

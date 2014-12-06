@@ -2,6 +2,17 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/Model/games.php</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/prototype/CascadeStyleSheet.css</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/JS/Js_Jeu.js</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/sql/BDD.sql</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/Model/cards.php</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/View/vue.php</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/Model/Utilisateur.php</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/Model/stacks.php</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/Controller/WebController.php</file>
+            <file>file:/C:/wamp/www/PhpProject1/Double-projetweb/Double-projetweb/projetweb/Controller/ReponsesAjax.php</file>
+        </group>
     </open-files>
 </project-private>

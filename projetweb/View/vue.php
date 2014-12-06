@@ -2,6 +2,7 @@
 
 class Vue {
 
+    public $index_courant;
     public $nbPlayers;
     public $tab_partie;
     public $listStack;
@@ -38,21 +39,20 @@ class Vue {
 
     private function arene() {
         $res = $this->header() .
-                '<div><legend>Score des joueurs</legend>';
+                '<div id="ActuJeu"><div><legend>Score des joueurs</legend>';
         foreach ($this->listUtil as $key => $value) {
             $res .= '<span class ="ScorePartie">' . $value[1] . '
                             : 0
                         </span>';
         }
-        $res .= '</div><legend>Partie</legend>';
+        $res .= '</div><legend>Partie</legend>'
+                . '<h3 style="width:420px; display:inline-block" class="centre"><span class="label label-default">Votre Carte</span>'
+                . '<h3 style="width:420px; display:inline-block;" class="centre"><span class="label label-default">La pioche</span></h3>';
        // $ordre = array(1,2,3,4,0);
         $i = 0;
-        
-        print_r($this->listStack);
         foreach ($this->listStack as $id => $listSymbol) {
-            //echo $ordre[$i];
-            if ($i == 2) {
-                $res .= '<div id="block">';
+            if ($id == 2) {
+                $res .= '<h3 class="centre"><span class="label label-default">Cartes Adverses</span></h3>';
                 $res .= '<div class = "CarteC adversaire">';
                 foreach ($listSymbol as $key => $value) {
                     $res .= '<p class = \'Icone\'>
@@ -76,7 +76,6 @@ class Vue {
                             </p>';
                 }
                 $res .= '</div>';
-                $res .= '</div>';
             } 
             elseif ($i == 1) {
                 $res .= '<div class = "CarteC Pile" >';
@@ -99,6 +98,7 @@ class Vue {
             }
             $i++;
         }
+        $res .='<script>actualiserJeu(' . $this->index_courant . ');</script></div>';
         return $res;
     }
 

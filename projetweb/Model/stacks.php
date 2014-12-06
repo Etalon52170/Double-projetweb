@@ -74,8 +74,26 @@ class stacks {
         }
     }
 
-    public static function findAll() {
+    public static function findByOrder($id_order) {
+        try {
+            $c = Base::getConnection();
+            $query = $c->prepare("SELECT * FROM stacks WHERE numOrder = :id_order ");
+            $query->bindParam(":id_order", $id_order, PDO::PARAM_INT);
+            $dbres = $query->execute();
+            $d = $query->fetch(PDO::FETCH_BOTH);
+            $s = new stacks();
+            $s->id = $d[0];
+            $s->game_id = $d[1];
+            $s->card_id = $d[2];
+            $s->numOrder = $d[3];
+            return $s;
+        } catch (PDOException $e) {
+            echo("méthode insert() non implantée");
+            return null;
+        }
+    }
 
+    public static function findAll() {
         try {
             $c = Base::getConnection();
             $query = $c->prepare("select * from stacks");
@@ -128,15 +146,14 @@ class stacks {
                     $stacks = new stacks();
                     $stacks->game_id = $_SESSION['game_id'];
                     $stacks->card_id = $value;
-                    $stacks->numOrder = $key;
+                    $stacks->numOrder = $key + 1;
                     $stacks->insert();
                     $res[] = $stacks;
                 }
                 //affecter les index des cartes
                 $game = games::findById($_SESSION['game_id']);
-                if ($game->indexx == NULL)
-                {
-                    games::Index($_SESSION['game_id'],5);
+                if ($game->indexx == NULL) {
+                    games::Index($_SESSION['game_id'], 5);
                 }
                 $user = Utilisateur::findByGameId($_SESSION['game_id']);
                 $i = 1;

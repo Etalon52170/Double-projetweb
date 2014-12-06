@@ -2,6 +2,9 @@
 
 include_once '../Model/Utilisateur.php';
 include_once '../Model/games.php';
+include_once '../Model/stacks.php';
+include_once '../Model/cards.php';
+include_once '../Model/Base.php';
 session_start();
 
 $tabSelecteur = array(
@@ -9,7 +12,9 @@ $tabSelecteur = array(
     'deconn' => 'deconnection',
     'inscri' => 'inscription',
     'actuJ' => 'actualiserJoueurs',
-    'decPlay' => 'decrementerPlayers'
+    'decPlay' => 'decrementerPlayers',
+    'checkSym' => 'checkSymbol',
+    'actuJeu' => 'actualiserJeu'
 );
 
 if (array_key_exists($_POST['action'], $tabSelecteur)) {
@@ -104,6 +109,125 @@ function actualiserJoueurs() {
     }
 }
 
+function actualiserJeu() {
+    $index_courant = (isset($_POST['ind'])) ? $_POST['ind'] : "";
+    $compteur = 0;
+    $_COOKIE = $_SESSION;
+    session_write_close();
+    while (games::findById($_SESSION['game_id'])->indexx == $index_courant) {
+        usleep(500000);
+        $compteur++;
+        if ($compteur > 50) {
+            $res = array('code' => "relance");
+            break;
+        }
+    }
+    $code = '';
+    if (games::findById($_SESSION['game_id'])->indexx != $index_courant) {
+        $list_user = Utilisateur::findByGameId($_SESSION['game_id']);
+        $decks = array();
+        $id;
+        foreach ($list_user as $key => $value) {
+            if ($value[1] == $_SESSION['login']) {
+                $id = $key;
+            }
+        }
+        //on ajoute les symboles du joueur connecté dans l'array en position 0
+        $me = Utilisateur::findById($_SESSION['id_user']);
+        $stack = stacks::findByOrder($me->indexx);
+        $carte = cards::findById($stack->card_id);
+        $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
+        shuffle($symbole);
+        $decks[0] = $symbole;
+
+
+        //on ajoute la pioche à la place 1 dans l'array
+        $game = games::findById($_SESSION['game_id']);
+        $stack = stacks::findByOrder($game->indexx);
+        $carte = cards::findById($stack->card_id);
+        $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
+        shuffle($symbole);
+        $decks[1] = $symbole;
+
+        $users = Utilisateur::findByGameId($_SESSION['game_id']);
+        $j = 2;
+        foreach ($users as $key => $value) {
+            //si c'est un adverse alors on le met dans une array à la place 2-3-4
+            if ($value[0] != $_SESSION['id_user']) {
+                $stack = stacks::findByOrder($value[3]);
+                $carte = cards::findById($stack->card_id);
+                $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
+                shuffle($symbole);
+                $decks[$j] = $symbole;
+                $j++;
+            }
+        }
+        $listStack = $decks;
+        $listUtil = $list_user;
+        $code .='<div><legend>Score des joueurs</legend>';
+        foreach ($listUtil as $key => $value) {
+            $code .= '<span class ="ScorePartie">' . $value[1] . '
+                            : 0
+                        </span>';
+        }
+        $code .= '</div><legend>Partie</legend>'
+                . '<h3 style="width:420px; display:inline-block" class="centre"><span class="label label-default">Votre Carte</span>'
+                . '<h3 style="width:420px; display:inline-block;" class="centre"><span class="label label-default">La pioche</span></h3>';
+        $i = 0;
+        foreach ($listStack as $id => $listSymbol) {
+            if ($id == 2) {
+                $code .= '<h3 class="centre"><span class="label label-default">Cartes Adverses</span></h3>';
+                $code .= '<div class = "CarteC adversaire">';
+                foreach ($listSymbol as $key => $value) {
+                    $code .= '<p class = \'Icone\'>
+                            <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                   </p>';
+                }
+                $code .= '</div>';
+            } elseif ($i == 3) {
+                $code .= '<div class = "CarteC adversaire">';
+                foreach ($listSymbol as $key => $value) {
+                    $code .= '<p class = \'Icone\'>
+                                <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                            </p>';
+                }
+                $code .= '</div>';
+            } elseif ($i == 4) {
+                $code .= '<div class = "CarteC adversaire">';
+                foreach ($listSymbol as $key => $value) {
+                    $code .= '<p class = \'Icone\'>
+                                <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                            </p>';
+                }
+                $code .= '</div>';
+                $code .= '</div>';
+            } elseif ($i == 1) {
+                $code .= '<div class = "CarteC Pile" >';
+                foreach ($listSymbol as $key => $value) {
+                    $code .= '<p class = \'Icone\'>
+                            <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                        </p>';
+                }
+                $code .= '</div>';
+                $code .= '</div>';
+            } elseif ($i == 0) {
+                $code .= '<div id="block">';
+                $code .= '<div class = "CarteC perso">';
+                foreach ($listSymbol as $key => $value) {
+                    $code .= '<p class = \'Icone Cperso\' id=' . $value . '>
+                            <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                        </p>';
+                }
+                $code .= '</div>';
+            }
+            $i++;
+        }
+        $new_index = $index_courant + 1;
+        $res = array('code' => $code, 'new_ind' => $new_index);
+    }
+    echo(json_encode($res));
+}
+
 function decrementerPlayers() {
     $game = games::findById($_SESSION['game_id']);
     Utilisateur::updatePartie($_SESSION['id_user'], NULL);
@@ -118,6 +242,49 @@ function decrementerPlayers() {
     $res = array('decrementer' => "ok");
     $_SESSION['game_id'] = "";
     echo(json_encode($res));
+}
+
+function checkSymbol() {
+    $id_symbol = (isset($_POST['id_symbol'])) ? $_POST['id_symbol'] : "";
+    $user = Utilisateur::findById($_SESSION['id_user']);
+    $game = games::findById($_SESSION['game_id']);
+    $stack = stacks::findByOrder($game->indexx);
+    $carte = cards::findById($stack->card_id);
+    //tester si le symbole choisis fait partie de ceux de la pioche :
+    for ($index = 0; $index < 8; $index++) {
+        $symbol = "symbol" . $index;
+        if ($carte->$symbol == $id_symbol) {
+            try {
+                $db = Base::getConnection();
+                $db->beginTransaction();
+
+                //on stock la valeur de l'index pour detecter les éventuels roolback à effectuer par la suite
+                $id = $game->indexx;
+                //on augmente le nb de points du joueurs de 1
+                $nb_pts = $user->nbCards + 1;
+                $sth = $db->exec("update utilisateur set  nbCards= ".$nb_pts."
+                                                 where id_user =".$_SESSION['id_user']);
+                //on change sa carte
+                $sth = $db->exec("update utilisateur set  indexx=".$game->indexx."
+                                                 where id_user =".$_SESSION['id_user']);
+                //on change la pioche
+                $new_index = $game->indexx + 1;
+                $sth = $db->exec("update games set indexx=".$new_index."
+                                               where id =".$_SESSION['game_id']);
+                $new_id = $id + 1;
+                //on test si l'index n'a pas évolué entre temps sinon on rollback
+                if (games::findById($_SESSION['game_id'])->indexx != $new_id) {
+                    $db->rollback();
+                } else {//si tout ce passe bien on commit
+                    $db->commit();
+                }
+            } catch (Exception $e) {
+                $db->rollback();
+            }
+        }
+    }
+    $_POST['ind'] = $game->indexx;
+    actualiserJeu();
 }
 
 ?>
