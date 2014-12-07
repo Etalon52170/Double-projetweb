@@ -162,10 +162,27 @@ class Utilisateur {
 
     public static function updateIndexx($id_user, $indexx) {
         $c = Base::getConnection();
-        echo $id_user." ".$indexx;
         $query = $c->prepare("update utilisateur set  indexx= ?
                                                  where id_user = ?");
         $query->bindParam(1, $indexx, PDO::PARAM_INT);
+        $query->bindParam(2, $id_user, PDO::PARAM_INT);
+        return $query->execute();
+    }
+    
+    public static function updateNbVictoire($id_user,$nb_victoire){
+        $c = Base::getConnection();
+        $query = $c->prepare("update utilisateur set  nb_victoire= ?
+                                                 where id_user = ?");
+        $query->bindParam(1, $nb_victoire, PDO::PARAM_INT);
+        $query->bindParam(2, $id_user, PDO::PARAM_INT);
+        return $query->execute();
+    }
+    
+    public static function updateNbPartie($id_user,$nb_partie){
+        $c = Base::getConnection();
+        $query = $c->prepare("update utilisateur set  nb_partie= ?
+                                                 where id_user = ?");
+        $query->bindParam(1, $nb_partie, PDO::PARAM_INT);
         $query->bindParam(2, $id_user, PDO::PARAM_INT);
         return $query->execute();
     }
@@ -187,7 +204,7 @@ class Utilisateur {
         $query->bindParam(2, $id_user, PDO::PARAM_INT);
         return $query->execute();
     }
-
+    
     public static function findByGameId($id_Game) {
         try {
             $c = Base::getConnection();
@@ -201,6 +218,32 @@ class Utilisateur {
                 $s[] = $d[1]; //login
                 $s[] = $d[6]; //nbCards
                 $s[] = $d[7]; //Index de la carte du joueur
+                $s[] = $d[8]; //game_id
+                $res[] = $s;
+            }
+            return $res;
+        } catch (PDOException $e) {
+            echo("méthode insert() non implantée");
+            return null;
+        }
+    }
+    
+    public static function findByGameIdOderBy($id_Game){
+        try {
+            $c = Base::getConnection();
+            $query = $c->prepare("SELECT * FROM utilisateur WHERE game_id = :idGame ORDER BY nbCards DESC");
+            $query->bindParam(":idGame", $id_Game, PDO::PARAM_INT);
+            $dbres = $query->execute();
+            $res = array();
+            while ($d = $query->fetch(PDO::FETCH_BOTH)) {
+                $s = array();
+                $s[] = $d[0]; //id_user
+                $s[] = $d[1]; //login
+                $s[] = $d[3]; //nb_victoire
+                $s[] = $d[4]; //nb_partie
+                $s[] = $d[5]; //mail
+                $s[] = $d[6]; //nbCards
+                $s[] = $d[7]; //Index
                 $s[] = $d[8]; //game_id
                 $res[] = $s;
             }

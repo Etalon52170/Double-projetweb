@@ -106,7 +106,6 @@ class WebController extends Controller {
         $stack = stacks::findByOrder($me->indexx);
         $carte = cards::findById($stack->card_id);
         $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
-        shuffle($symbole);
         $decks[0] = $symbole;
 
 
@@ -126,13 +125,13 @@ class WebController extends Controller {
                 $stack = stacks::findByOrder($value[3]);
                 $carte = cards::findById($stack->card_id);
                 $symbole = array($carte->symbol0, $carte->symbol1, $carte->symbol2, $carte->symbol3, $carte->symbol4, $carte->symbol5, $carte->symbol6, $carte->symbol7);
-                shuffle($symbole);
                 $decks[$j] = $symbole;
                 $j++;
             }
         }
-
-        $view->index_courant = $game->indexx;
+        //la liste suivante est utile lors de l'affichage du classement des joeurs :
+        $view->listUtilOrder = Utilisateur::findByGameIdOderBy($_SESSION['game_id']);
+        $view->index_courant = games::findById($_SESSION['game_id'])->indexx;
         $view->listStack = $decks;
         $view->listUtil = $list_user;
         echo $view->affichageGeneral('arene');

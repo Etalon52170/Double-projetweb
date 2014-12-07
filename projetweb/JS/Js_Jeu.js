@@ -47,25 +47,25 @@ function joinGame(id) {
 }
 
 var nbplayers;
+var request;
 function actualiserJoueurs(nbjoueurs) {
     nbplayers = nbjoueurs;
-    XmlHttp = GetXmlHttpObject();
+    request = GetXmlHttpObject();
     var param = "action=actuJ&nbPlayers=" + nbjoueurs;
-    if (XmlHttp == null) {
+    if (request == null) {
         alert("Objets HTTP non supportés");
     } else {
-        XmlHttp.onreadystatechange = stateChangedActualiserJoueurs;
-        XmlHttp.open("POST", "./Controller/ReponsesAjax.php", true);
-        XmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        XmlHttp.send(param);
+        request.onreadystatechange = stateChangedActualiserJoueurs;
+        request.open("POST", "./Controller/ReponsesAjax.php", true);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(param);
     }
 }
-
 function stateChangedActualiserJoueurs()
 {
     var json;
-    if (XmlHttp.readyState == 4) {
-        json = JSON.parse(XmlHttp.responseText);
+    if (request.readyState == 4) {
+        json = JSON.parse(request.responseText);
         if (json.code != "relance") {
             if (json.nbJoueurs < 4) {
                 window.document.getElementById("barre").innerHTML = json.code;
@@ -82,27 +82,14 @@ function stateChangedActualiserJoueurs()
     }
 }
 
-function stateChangedActualiserJeu() {
-    var json;
-    if (requete.readyState == 4) {
-        json = JSON.parse(requete.responseText);
-        if (json.code != "relance") {
-            //mettre un truc comme quoi tu as gagné
-            window.document.getElementById("ActuJeu").innerHTML = json.code;
-            actualiserJeu(json.new_ind);
-            ajouteJS();
-        } else {
-            //mettre un truc comme quoi tu as perdu
-            actualiserJeu(index);
-        }
-    }
-}
 
 function versJeux() {
     location.href = "./index.php?a=arene";
 }
+//////////////////////////////////////////Retour////////////////////////////////
 
 function retour() {
+    request.abort();
     XmlHttp = GetXmlHttpObject();
     var param = "action=decPlay";
     if (XmlHttp == null) {
@@ -126,9 +113,41 @@ function stateChangedDecrementerJoueurs()
     }
 }
 
+//////////////////////////////////////////Fin - Retour////////////////////////////////
+
+//////////////////////////////////////////Retour du Classement////////////////////////////////
+
+function retourLobby() {
+    XmlHttp = GetXmlHttpObject();
+    var param = "action=retLob";
+    if (XmlHttp == null) {
+        alert("Objets HTTP non supportés");
+    } else {
+        XmlHttp.onreadystatechange = stateChangedRetourLobby;
+        XmlHttp.open("POST", "./Controller/ReponsesAjax.php", false);
+        XmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        XmlHttp.send(param);
+    }
+}
+
+function stateChangedRetourLobby()
+{
+    var json;
+    if (XmlHttp.readyState == 4) {
+        json = JSON.parse(XmlHttp.responseText);
+        if (json.retour == "ok") {
+            location.href = "./index.php?a=jeux";
+        }
+    }
+}
+//////////////////////////////////////////Fin - Retour du Classement////////////////////////////////
+
+//////////////////////////////////////////Envoi du Symbol////////////////////////////////
+
+var value_symbol;
 function SendInfo() {
-    var value = $(this).attr('id');
-    var param = "action=checkSym&id_symbol=" + value;
+    value_symbol = $(this).attr('id');
+    var param = "action=checkSym&id_symbol=" + value_symbol;
     XmlHttp = GetXmlHttpObject();
     if (XmlHttp == null) {
         alert("Objets HTTP non supportés");
@@ -145,29 +164,43 @@ function stateChangedCheckSymbol() {
     var json;
     if (XmlHttp.readyState == 4) {
         json = JSON.parse(XmlHttp.responseText);
-        if (json.code != "relance") {
-            //mettre un truc comme quoi tu as gagné
-            var audioElement = document.createElement('audio');
-            audioElement.setAttribute('src', 'Monster.mp3');
-            $.get();
-            audioElement.addEventListener("load", function() {
-                audioElement.play();
-            }, true);
-            audioElement.play();
-            window.document.getElementById("ActuJeu").innerHTML = json.code;
-            actualiserJeu(json.new_ind);
-            ajouteJS();
+        if (json.code == "bad") {
+            document.getElementById(value_symbol).style.borderColor = "red";
         } else {
-            //mettre un truc comme quoi tu as perdu
-            actualiserJeu(json.new_ind);
+            if (json.end != 'ok') {
+                if (json.code != "relance") {
+                    //mettre un truc comme quoi tu as gagné
+                    var audioElement = document.createElement('audio');
+                    audioElement.setAttribute('src', 'Monster.mp3');
+                    $.get();
+                    audioElement.addEventListener("load", function() {
+                        audioElement.play();
+                    }, true);
+                    audioElement.play();
+                    window.document.getElementById("ActuJeu").innerHTML = json.code;
+                    actualiserJeu(json.new_ind);
+                    ajouteJS();
+                    //ajouter un "+" lorsqu'une personne marque un point à coté de son nombre de points
+                    document.getElementById('plus').style.color = "#00FF00";
+                    setTimeout(function() {
+                        document.getElementById('plus').style.color = "#FFFFFF";
+                    }, 2000);
+                }else{
+                    actualiserJeu(index);
+                }
+            }
         }
     }
 }
+//////////////////////////////////////////Fin - Retour////////////////////////////////
+
+//////////////////////////////////////////Actualiser le Jeu////////////////////////////////
+
 var index;
 var requete;
 function actualiserJeu(index_courant) {
     index = index_courant;
-    var param = "action=actuJeu&ind=" + index_courant;
+    var param = "action=actuJeu&ind=" + index;
     requete = GetXmlHttpObject();
     if (requete == null) {
         alert("Objets HTTP non supportés");
@@ -184,16 +217,41 @@ function stateChangedActualiserJeu() {
     if (requete.readyState == 4) {
         json = JSON.parse(requete.responseText);
         if (json.code != "relance") {
-            //mettre un truc comme quoi tu as gagné
-            window.document.getElementById("ActuJeu").innerHTML = json.code;
-            actualiserJeu(json.new_ind);
-            ajouteJS();
-        } else {
-            //mettre un truc comme quoi tu as perdu
+            if (json.end == 'ok') {
+                //une fois la partie finie, on stop la requete ajax pour raffraichir la vue
+                //meme si il est impossible qu'un joueur recréé une partie avec le meme id
+                //mais on ne sait jamais !!!
+                requete.abort();
+                window.document.getElementById("ActuJeu").innerHTML = json.code;
+            } else {
+                window.document.getElementById("ActuJeu").innerHTML = json.code;
+                actualiserJeu(json.new_ind);
+                ajouteJS();
+            }
+        }else{
             actualiserJeu(index);
+                ajouteJS();
         }
     }
 }
+/*function stateChangedActualiserJeu() {
+ var json;
+ if (requete.readyState == 4) {
+ json = JSON.parse(requete.responseText);
+ if (json.code != "relance") {
+ //mettre un truc comme quoi tu as gagné
+ window.document.getElementById("ActuJeu").innerHTML = json.code;
+ actualiserJeu(json.new_ind);
+ ajouteJS();
+ } else {
+ //mettre un truc comme quoi tu as perdu
+ actualiserJeu(index);
+ }
+ }
+ }*/
+
+//////////////////////////////////////////Fin - Actualiser le Jeu////////////////////////////////
+
 function ajouteJS() {
     $('p.Cperso').mouseover(hoverDiv);
     $('p.Cperso').mouseleave(leaveDiv);

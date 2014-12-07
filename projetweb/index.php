@@ -10,7 +10,6 @@ $controleur->callAction($_GET);
 /*
   include './Model/cards.php';
   $a = cards();
-  print_r($a);
   // de 0 à 56
   foreach ($a as $idCards => $arrayIcon) {
   $cards = new cards();

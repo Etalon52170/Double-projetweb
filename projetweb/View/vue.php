@@ -7,9 +7,10 @@ class Vue {
     public $tab_partie;
     public $listStack;
     public $listUtil;
+    public $listUtilOrder;
     protected $tabSelecteur = array(
         'acceuil' => 'acceuilpage',
-        'jeux' => 'pagePrincipale',
+        'jeux' => 'lobby',
         'inscri' => 'inscription',
         'partie' => 'partie',
         'arene' => 'arene'
@@ -38,69 +39,106 @@ class Vue {
     }
 
     private function arene() {
-        $res = $this->header() .
-                '<div id="ActuJeu"><div><legend>Score des joueurs</legend><div class="play">Play</div>
-
-<div class="pause">Stop</div>';
-        foreach ($this->listUtil as $key => $value) {
-            $res .= '<span class ="ScorePartie">' . $value[1] . '
-                            : 0
+        $res = $this->header();
+        if ($this->index_courant != 58) {
+            $res .=
+                    '<div id="ActuJeu"><div><legend>Score des joueurs</legend>';
+            foreach ($this->listUtil as $key => $value) {
+                $res .= '<span class ="ScorePartie">' . $value[1] . '
+                            : ' . $value[2] . '
                         </span>';
-        }
-        $res .= '</div><legend>Partie</legend>'
-                . '<h3 style="width:420px; display:inline-block" class="centre"><span class="label label-default">Votre Carte</span>'
-                . '<h3 style="width:420px; display:inline-block;" class="centre"><span class="label label-default">La pioche</span></h3>';
-       // $ordre = array(1,2,3,4,0);
-        $i = 0;
-        foreach ($this->listStack as $id => $listSymbol) {
-            if ($id == 2) {
-                $res .= '<h3 class="centre"><span class="label label-default">Cartes Adverses</span></h3>';
-                $res .= '<div class = "CarteC adversaire">';
-                foreach ($listSymbol as $key => $value) {
-                    $res .= '<p class = \'Icone\'>
-                            <img src="../ressource/image/0'.$value.'.png" alt=""/>
-                   </p>';
-                }
-                $res .= '</div>';
-            } elseif ($i == 3) {
-                $res .= '<div class = "CarteC adversaire">';
-                foreach ($listSymbol as $key => $value) {
-                    $res .= '<p class = \'Icone\'>
-                                <img src="../ressource/image/0'.$value.'.png" alt=""/>
-                            </p>';
-                }
-                $res .= '</div>';
-            } elseif ($i == 4) {
-                $res .= '<div class = "CarteC adversaire">';
-                foreach ($listSymbol as $key => $value) {
-                    $res .= '<p class = \'Icone\'>
-                                <img src="../ressource/image/0'.$value.'.png" alt=""/>
-                            </p>';
-                }
-                $res .= '</div>';
-            } 
-            elseif ($i == 1) {
-                $res .= '<div class = "CarteC Pile" >';
-                foreach ($listSymbol as $key => $value) {
-                    $res .= '<p class = \'Icone\'>
-                            <img src="../ressource/image/0'.$value.'.png" alt=""/>
-                        </p>';
-                }
-                $res .= '</div>';
-                $res .= '</div>';
-            } elseif ($i == 0) {
-                $res .= '<div id="block">';
-                $res .= '<div class = "CarteC perso">';
-                foreach ($listSymbol as $key => $value) {
-                    $res .= '<p class = \'Icone Cperso\' id=' . $value . '>
-                            <img src="../ressource/image/0'.$value.'.png" alt=""/>
-                        </p>';
-                }
-                $res .= '</div>';
             }
-            $i++;
+            $res .= '</div><legend>Partie</legend>'
+                    . '<h3 style="width:420px; display:inline-block" class="centre"><span class="label label-default">Votre Carte</span>'
+                    . '<h3 style="width:420px; display:inline-block;" class="centre"><span class="label label-default">La pioche</span></h3>';
+            // $ordre = array(1,2,3,4,0);
+            $i = 0;
+            foreach ($this->listStack as $id => $listSymbol) {
+                if ($id == 2) {
+                    $res .= '<h3 class="centre"><span class="label label-default">Cartes Adverses</span></h3>';
+                    $res .= '<div class = "CarteC adversaire">';
+                    foreach ($listSymbol as $key => $value) {
+                        $res .= '<p class = \'Icone\'>
+                            <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                   </p>';
+                    }
+                    $res .= '</div>';
+                } elseif ($i == 3) {
+                    $res .= '<div class = "CarteC adversaire">';
+                    foreach ($listSymbol as $key => $value) {
+                        $res .= '<p class = \'Icone\'>
+                                <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                            </p>';
+                    }
+                    $res .= '</div>';
+                } elseif ($i == 4) {
+                    $res .= '<div class = "CarteC adversaire">';
+                    foreach ($listSymbol as $key => $value) {
+                        $res .= '<p class = \'Icone\'>
+                                <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                            </p>';
+                    }
+                    $res .= '</div>';
+                } elseif ($i == 1) {
+                    $res .= '<div class = "CarteC Pile" >';
+                    foreach ($listSymbol as $key => $value) {
+                        $res .= '<p class = \'Icone\'>
+                            <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                        </p>';
+                    }
+                    $res .= '</div>';
+                    $res .= '</div>';
+                } elseif ($i == 0) {
+                    $res .= '<div id="block">';
+                    $res .= '<div class = "CarteC perso">';
+                    foreach ($listSymbol as $key => $value) {
+                        $res .= '<p class = \'Icone Cperso\' id=' . $value . '>
+                            <img src="../ressource/image/0' . $value . '.png" alt=""/>
+                        </p>';
+                    }
+                    $res .= '</div>';
+                }
+                $i++;
+            }
+            $res .='<script>actualiserJeu(' . $this->index_courant . ');</script></div>';
+        } else {
+            //Afficher sous forme d'un tableau les gagnants avec leurs points respectifs
+            $res .= '
+            <table class="table table-hover">
+                <thead>
+                    <tr>    
+                        <th colspan="3" class="head_underline">Classement des joueurs :</th>
+                    </tr>
+                    <tr>
+                        <th class="centre">Pos</th>
+                        <th class="centre">Login</th>
+                        <th class="centre">Nombre de Points</th>
+                    </tr>
+                </thead>
+                <tbody>';
+            if (!empty($this->listUtilOrder)) {
+                $i = 1;
+                foreach ($this->listUtilOrder as $key => $value) {
+                    $res .= '
+                    <tr>
+                        <td style="width:33%;">#' . $i . '</td>
+                        <td style="width:33%;">' . $value[1] . '</td>
+                        <td style="width:33%;">' . $value[5] . '</td>
+                    </tr>';
+                    $i++;
+                }
+            } else {
+                $res .=' 
+                    <tr>
+                        <td colspan="3" > <font color="red">Nobody Win the GAME !</td>
+                    </tr>';
+            }
+
+            $res .= '
+                </tbody>
+            </table>
+            <button type="button" onClick="retour()" class="btn btn-primary" >Retour au Lobby</button>';
         }
-        $res .='<script>actualiserJeu(' . $this->index_courant . ');</script></div>';
         return $res;
     }
 
@@ -248,7 +286,7 @@ class Vue {
         return $res;
     }
 
-    private function pagePrincipale() {
+    private function lobby() {
         $res = $this->header() . '
         <div class="bs-example">
             <table class="table table-hover">
@@ -275,15 +313,15 @@ class Vue {
                         <td style="width:33%;">' . $value['nbPlayers'] . '/4 </td>
                         <td style="width:33%;"><button class="btn btn-sm btn-success" type="button" onClick="joinGame(' . $value['id'] . ')">Join</button></td>
                     </tr>';
-                }else{
-                  $message_vide = true;
+                } else {
+                    $message_vide = true;
                 }
             }
         } else {
             $message_vide = true;
         }
-        if($message_vide && !$message_plein){
-             $res .=' <tr>
+        if ($message_vide && !$message_plein) {
+            $res .=' <tr>
                         <td colspan="3" > <font color="red">Aucune partie n\'est disponible !</td>
                     </tr>
                     <tr>
@@ -292,8 +330,8 @@ class Vue {
         }
 
         $res .= '  
-                </table>
-            </tbody>
+                </tbody>
+            </table>
         </div>';
         return $res;
     }
@@ -367,4 +405,5 @@ class Vue {
     }
 
 }
+
 ?>
