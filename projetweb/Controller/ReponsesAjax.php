@@ -53,8 +53,11 @@ function deconnection() {
             $nb_end = $nbjoueurs->nbPlayers - 1;
             games::incrementGame($_SESSION['game_id'], $nb_end);
         }
-    }
     Utilisateur::updatePartie($_SESSION['id_user'], NULL);
+    } else {
+        $res = array('deco' => 'ok');
+        echo(json_encode($res));
+    }
 }
 
 function inscription() {
