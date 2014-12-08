@@ -11,10 +11,12 @@ $tabSelecteur = array(
     'deconn' => 'deconnection',
     'inscri' => 'inscription',
     'actuJ' => 'actualiserJoueurs',
+    'actuL' => 'actualiserLobby',
     'decPlay' => 'decrementerPlayers',
     'checkSym' => 'checkSymbol',
     'actuJeu' => 'actualiserJeu',
     'retLob' => 'retourLobby'
+    
 );
 
 if (array_key_exists($_POST['action'], $tabSelecteur)) {
@@ -296,6 +298,61 @@ function actualiserJeu() {
         }
         echo(json_encode($res));
     }
+}
+
+function actualiserLobby()
+{
+    $games = games::findAll();
+    $resGames = array();
+    foreach ($games as $key => $gamesObject) {
+        $resGames[$key]['id'] = $gamesObject->id;
+        $resGames[$key]['nbPlayers'] = $gamesObject->nbPlayers;
+        $resGames[$key]['indexx'] = $gamesObject->indexx;
+    }
+    $res = '<table class="table table-hover">
+                <thead>
+                    <tr>    
+                        <th colspan="2" class="head_underline">Liste de toutes les parties en attentes :</th>
+                        <th><button style="float:right;" class="btn btn-sm btn-primary" type="button" onClick="newGame()">Créer une nouvelle partie</button></th>
+                    </tr>
+                    <tr>
+                        <th class="centre">Numéro Partie</th>
+                        <th class="centre">Nombre de joueurs</th>
+                        <th class="centre">Rejoindre</th>
+                    </tr>
+                </thead>
+                <tbody>';
+        $message_vide = false;
+        $message_plein = false;
+        if (!empty($resGames)) {
+            foreach ($resGames as $key => $value) {
+                if ($value['nbPlayers'] < 4) {
+                    $message_plein = true;
+                    $res .= '<tr>
+                        <td style="width:33%;">' . $value['id'] . '</td>
+                        <td style="width:33%;">' . $value['nbPlayers'] . '/4 </td>
+                        <td style="width:33%;"><button class="btn btn-sm btn-success" type="button" onClick="joinGame(' . $value['id'] . ')">Join</button></td>
+                    </tr>';
+                } else {
+                    $message_vide = true;
+                }
+            }
+        } else {
+            $message_vide = true;
+        }
+        if ($message_vide && !$message_plein) {
+            $res .=' <tr>
+                        <td colspan="3" > <font color="red">Aucune partie n\'est disponible !</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" > <font color="red">Vous pouvez en créer une !</td>
+                    </tr>';
+        }
+
+        $res .= '  
+                </tbody>
+            </table>';
+    echo(json_encode($res));
 }
 
 function decrementerPlayers() {
