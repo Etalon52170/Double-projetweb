@@ -61,6 +61,7 @@ function actualiserJoueurs(nbjoueurs) {
         request.send(param);
     }
 }
+
 function stateChangedActualiserJoueurs()
 {
     var json;
@@ -250,6 +251,28 @@ function stateChangedActualiserJeu() {
  }
  }*/
 
+var request;
+function actualiserLooby() {
+    request = GetXmlHttpObject();
+    var param = "action=actuL";
+    if (request == null) {
+        alert("Objets HTTP non supportés");
+    } else {
+        request.onreadystatechange = stateChangedActualiserLooby;
+        request.open("POST", "./Controller/ReponsesAjax.php", true);
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send(param);
+    }
+}
+
+function stateChangedActualiserLooby()
+{
+    var json;
+    if (request.readyState == 4) {
+            window.document.getElementById("bs-example").innerHTML = JSON.parse(request.responseText);
+            setTimeout(function() {actualiserLooby();}, 5000);
+    }
+}
 //////////////////////////////////////////Fin - Actualiser le Jeu////////////////////////////////
 
 function ajouteJS() {
