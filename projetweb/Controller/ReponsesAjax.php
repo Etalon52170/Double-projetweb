@@ -92,7 +92,7 @@ function actualiserJoueurs() {
     while (games::findById($_SESSION['game_id'])->nbPlayers == $nbPlayers) {
         usleep(500000);
         $compteur++;
-        if ($compteur > 10) {
+        if ($compteur > 50) {
             $res = array('code' => "relance");
             break;
         }
@@ -367,7 +367,7 @@ function decrementerPlayers() {
         games::incrementGame($_SESSION['game_id'], $nbPlayers);
     }
     $res = array('decrementer' => "ok");
-    $_SESSION['game_id'] = "";
+    unset($_SESSION['game_id']);
     echo(json_encode($res));
 }
 
