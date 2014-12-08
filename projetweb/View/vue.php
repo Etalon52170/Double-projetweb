@@ -151,7 +151,7 @@ class Vue {
                 <span class = \'ScorePerso\'>
                     <img src=\'./prototype/Holy_Grail_Icon.png\' title="Nombre de parties">
                     : ' .
-                $_SESSION['nb_partie']
+                Utilisateur::findById($_SESSION['id_user'])->nb_partie
                 . '
                 <span>
             </div>
@@ -159,7 +159,7 @@ class Vue {
                 <span class = \'ScorePerso\'>
                     <img src="./prototype/The_D6_Icon.png" title="Nombre de victoires"/>
                     : ' .
-                $_SESSION['nb_victoire']
+                Utilisateur::findById($_SESSION['id_user'])->nb_victoire
                 . '
                 <span>
             </div>
