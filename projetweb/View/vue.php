@@ -288,7 +288,7 @@ class Vue {
 
     private function lobby() {
         $res = $this->header() . '
-        <div class="bs-example">
+        <div id="bs-example">
             <table class="table table-hover">
                 <thead>
                     <tr>    
@@ -332,7 +332,8 @@ class Vue {
         $res .= '  
                 </tbody>
             </table>
-        </div>';
+        </div>
+        <script>actualiserLooby();</script>';
         return $res;
     }
 
