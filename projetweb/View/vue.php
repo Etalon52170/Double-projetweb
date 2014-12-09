@@ -150,7 +150,7 @@ class Vue {
             <script type="text/JavaScript" src="./JS/Js_Jeu.js"></script>
             <div class = \'left-score\'>
                 <span class = \'ScorePerso\'>
-                    <img src=\'./prototype/The_D6_Icon.png\' title="Nombre de parties">
+                    <img src=\'./img/The_D6_Icon.png\' title="Nombre de parties">
                     : ' .
                 Utilisateur::findById($_SESSION['id_user'])->nb_partie
                 . '
@@ -158,7 +158,7 @@ class Vue {
             </div>
             <div class = \'left-score\'>
                 <span class = \'ScorePerso\'>
-                    <img src="./prototype/Holy_Grail_Icon.png" title="Nombre de victoires"/>
+                    <img src="./img/Holy_Grail_Icon.png" title="Nombre de victoires"/>
                     : ' .
                 Utilisateur::findById($_SESSION['id_user'])->nb_victoire
                 . '
