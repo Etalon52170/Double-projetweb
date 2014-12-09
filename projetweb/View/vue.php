@@ -19,7 +19,7 @@ class Vue {
     public function __construct() {
         
     }
-
+    //getter - setter
     public function __set($attr_name, $attr_val) {
 
         if (property_exists(__CLASS__, $attr_name)) {
@@ -38,6 +38,7 @@ class Vue {
         throw new Exception($emess, 45);
     }
 
+    //affichage de la vue de la partie
     private function arene() {
         $res = $this->header();
         if ($this->index_courant != 58) {
@@ -149,7 +150,7 @@ class Vue {
             <script type="text/JavaScript" src="./JS/Js_Jeu.js"></script>
             <div class = \'left-score\'>
                 <span class = \'ScorePerso\'>
-                    <img src=\'./prototype/Holy_Grail_Icon.png\' title="Nombre de parties">
+                    <img src=\'./prototype/The_D6_Icon.png\' title="Nombre de parties">
                     : ' .
                 Utilisateur::findById($_SESSION['id_user'])->nb_partie
                 . '
@@ -157,7 +158,7 @@ class Vue {
             </div>
             <div class = \'left-score\'>
                 <span class = \'ScorePerso\'>
-                    <img src="./prototype/The_D6_Icon.png" title="Nombre de victoires"/>
+                    <img src="./prototype/Holy_Grail_Icon.png" title="Nombre de victoires"/>
                     : ' .
                 Utilisateur::findById($_SESSION['id_user'])->nb_victoire
                 . '
@@ -176,6 +177,7 @@ class Vue {
         return $res;
     }
 
+    //affichage de la barre de chargement en attente de 4 joueurs
     private function partie() {
         $pourcent = $this->nbPlayers * 25;
         $res = $this->header() .
@@ -219,6 +221,7 @@ class Vue {
         return $res;
     }
 
+    //vue de l'inscription
     private function inscription() {
         $res = '
         <header>
@@ -286,6 +289,7 @@ class Vue {
         return $res;
     }
 
+    //vue de la liste de partie en attente de joueurs
     private function lobby() {
         $res = $this->header() . '
         <div id="bs-example">
@@ -337,6 +341,7 @@ class Vue {
         return $res;
     }
 
+    //acceuil
     private function acceuilpage() {
         $res = '
         <header>

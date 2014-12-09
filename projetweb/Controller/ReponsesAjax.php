@@ -1,11 +1,16 @@
 <?php
 
+/**
+ * Ce fichier php permet la réponse du serveur lors d'une requête ajax
+ */
 include_once '../Model/Utilisateur.php';
 include_once '../Model/games.php';
 include_once '../Model/stacks.php';
 include_once '../Model/cards.php';
 include_once '../Model/Base.php';
 session_start();
+
+//Lors de l'appel ajax, on passe en parametre une action qui définiera la méthode à lancer
 $tabSelecteur = array(
     'conn' => 'connexion',
     'deconn' => 'deconnection',
@@ -16,7 +21,6 @@ $tabSelecteur = array(
     'checkSym' => 'checkSymbol',
     'actuJeu' => 'actualiserJeu',
     'retLob' => 'retourLobby'
-    
 );
 
 if (array_key_exists($_POST['action'], $tabSelecteur)) {
@@ -27,8 +31,10 @@ if (array_key_exists($_POST['action'], $tabSelecteur)) {
 function connexion() {
     $login = (isset($_POST['log'])) ? $_POST['log'] : "";
     $password = (isset($_POST['pwd'])) ? $_POST['pwd'] : "";
+    //On vérifie qu'il y a une personne avec un mdp et un pwd passé en parametre
     $user = Utilisateur::findByLogPwd($login, $password);
     if ($user->login != "") {
+        //si c'est le cas on nourit le $_session et on renvoi ok sinon ko
         $_SESSION['id_user'] = $user->id_user;
         $_SESSION['login'] = $user->login;
         $_SESSION['nb_partie'] = $user->nb_partie;
@@ -45,7 +51,10 @@ function connexion() {
 }
 
 function deconnection() {
+    //On détruit la session lors de la deconnection
     $res = session_destroy();
+    // s'il se deconnecte en partie on appelle la méthode "actualiserJoueurs" qui fera les modfications pour les personnes 
+    // en attentes d'être 4 ! (cette méthode fait un echo qui réponds au serveur donc nous n'en refaisons pas).
     if (isset($_SESSION['game_id'])) {
         actualiserJoueurs();
         $nbjoueurs = games::findById($_SESSION['game_id']);
@@ -55,8 +64,8 @@ function deconnection() {
             $nb_end = $nbjoueurs->nbPlayers - 1;
             games::incrementGame($_SESSION['game_id'], $nb_end);
         }
-    Utilisateur::updatePartie($_SESSION['id_user'], NULL);
-    } else {
+        Utilisateur::updatePartie($_SESSION['id_user'], NULL);
+    } else {//si tout ce passe bien on renvoi ok
         $res = array('deco' => 'ok');
         echo(json_encode($res));
     }
@@ -68,6 +77,7 @@ function inscription() {
     $email = (isset($_POST['email'])) ? $_POST['email'] : "";
     $user = Utilisateur::findByLog($login);
     $res = "ok";
+    //on test si le pseudo avec lequel veut s'inscrire une personne n'est pas déjà choisis si c'est le cas nous lui interdisons !
     if ($user->login != "") {
         $res = "ko";
     } else {
@@ -87,7 +97,10 @@ function inscription() {
 
 function actualiserJoueurs() {
     $nbPlayers = (isset($_POST['nbPlayers'])) ? $_POST['nbPlayers'] : "";
+    //permet de lancer une deuxieme requete ajax qui ne va pas attendre la fin de celle ci pour commencer
     session_write_close();
+
+    //Méthode pour effectuer l'attente côté serveur
     $compteur = 0;
     while (games::findById($_SESSION['game_id'])->nbPlayers == $nbPlayers) {
         usleep(500000);
@@ -97,6 +110,7 @@ function actualiserJoueurs() {
             break;
         }
     }
+    //Code html qui permet de changer la barre de chargement selon le nb de joueurs en attente
     $game = games::findById($_SESSION['game_id']);
     if ($nbPlayers != $game->nbPlayers) {
         $code = '<div class="centre-taille40">
@@ -138,8 +152,11 @@ function actualiserJoueurs() {
 
 function actualiserJeu() {
     $index_courant = (isset($_POST['ind'])) ? $_POST['ind'] : "";
-    $compteur = 0;
+    //permet de lancer une deuxieme requete ajax qui ne va pas attendre la fin de celle ci pour commencer
     session_write_close();
+
+    //Méthode pour effectuer l'attente côté serveur
+    $compteur = 0;
     while (games::findById($_SESSION['game_id'])->indexx == $index_courant) {
         usleep(500000);
         $compteur++;
@@ -148,9 +165,9 @@ function actualiserJeu() {
             break;
         }
     }
+    //si on arrive à la fin de la partie
+    //Afficher sous forme d'un tableau les gagnants avec leurs points respectifs
     if (games::findById($_SESSION['game_id'])->indexx == NULL) {
-        //si on arrive à la fin de la partie
-        //Afficher sous forme d'un tableau les gagnants avec leurs points respectifs
         $code = '
             <table class="table table-hover">
                 <thead>
@@ -195,11 +212,15 @@ function actualiserJeu() {
         $find = true;
         echo(json_encode($res));
     } else {
+        //si ça n'est pas la fin de la partie alors on raffraichis la partie
         $code = '';
+        //Si l'index de la pioche est différent de celui qu'il devrait etre alors on fait les modifications 
+        //pour afficher la nouvelle carte de la pioche
         if (games::findById($_SESSION['game_id'])->indexx != $index_courant) {
             $list_user = Utilisateur::findByGameId($_SESSION['game_id']);
             $decks = array();
             $id;
+            //on récupère l'id de la personne connecté pour lui affecté une carte qui n'est pas la meme qu'aux autres
             foreach ($list_user as $key => $value) {
                 if ($value[1] == $_SESSION['login']) {
                     $id = $key;
@@ -233,6 +254,7 @@ function actualiserJeu() {
                     $j++;
                 }
             }
+            //ensuite on créé le code qui va permettre le raffraichissement
             $listStack = $decks;
             $listUtil = $list_user;
             $code .='<div><legend>Score des joueurs</legend>';
@@ -300,8 +322,7 @@ function actualiserJeu() {
     }
 }
 
-function actualiserLobby()
-{
+function actualiserLobby() {
     $games = games::findAll();
     $resGames = array();
     foreach ($games as $key => $gamesObject) {
@@ -322,34 +343,34 @@ function actualiserLobby()
                     </tr>
                 </thead>
                 <tbody>';
-        $message_vide = false;
-        $message_plein = false;
-        if (!empty($resGames)) {
-            foreach ($resGames as $key => $value) {
-                if ($value['nbPlayers'] < 4) {
-                    $message_plein = true;
-                    $res .= '<tr>
+    $message_vide = false;
+    $message_plein = false;
+    if (!empty($resGames)) {
+        foreach ($resGames as $key => $value) {
+            if ($value['nbPlayers'] < 4) {
+                $message_plein = true;
+                $res .= '<tr>
                         <td style="width:33%;">' . $value['id'] . '</td>
                         <td style="width:33%;">' . $value['nbPlayers'] . '/4 </td>
                         <td style="width:33%;"><button class="btn btn-sm btn-success" type="button" onClick="joinGame(' . $value['id'] . ')">Join</button></td>
                     </tr>';
-                } else {
-                    $message_vide = true;
-                }
+            } else {
+                $message_vide = true;
             }
-        } else {
-            $message_vide = true;
         }
-        if ($message_vide && !$message_plein) {
-            $res .=' <tr>
+    } else {
+        $message_vide = true;
+    }
+    if ($message_vide && !$message_plein) {
+        $res .=' <tr>
                         <td colspan="3" > <font color="red">Aucune partie n\'est disponible !</td>
                     </tr>
                     <tr>
                         <td colspan="3" > <font color="red">Vous pouvez en créer une !</td>
                     </tr>';
-        }
+    }
 
-        $res .= '  
+    $res .= '  
                 </tbody>
             </table>';
     echo(json_encode($res));
@@ -371,6 +392,7 @@ function decrementerPlayers() {
     echo(json_encode($res));
 }
 
+//cette méthode permet de savoir si le symbole sur lequel à cliqué le joeurs fait partie des symboles de la pioche
 function checkSymbol() {
     $id_symbol = (isset($_POST['id_symbol'])) ? $_POST['id_symbol'] : "";
     $user = Utilisateur::findById($_SESSION['id_user']);
@@ -447,15 +469,6 @@ function retourLobby() {
         Utilisateur::updatePartie($_SESSION['id_user'], NULL);
         //on met les points du joueurs à 0 
         Utilisateur::updatePoint($_SESSION['id_user'], 0);
-        //on supprime la partie et les stacks si ce n'est pas déjà fait
-        /* $games = games::findById($_SESSION['game_id']);
-          if (games::findById($_SESSION['game_id'])->id != '') {
-          $games->delete();
-          $list_stack = stacks::findAll();
-          foreach ($list_stack as $key => $value) {
-          $value->delete();
-          }
-          } */
         //On augmente le nb de partie du joueurs de 1.
         $nb_partie_end = $_SESSION['nb_partie'] + 1;
         Utilisateur::updateNbPartie($_SESSION['id_user'], $nb_partie_end);
@@ -467,4 +480,5 @@ function retourLobby() {
         echo(json_encode($res));
     }
 }
+
 ?>

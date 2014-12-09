@@ -1,16 +1,3 @@
-function deconnection() {
-    XmlHttp = GetXmlHttpObject();
-    if (XmlHttp == null) {
-        alert("Objets HTTP non supportés");
-    } else {
-        XmlHttp.onreadystatechange = stateChanged;
-        XmlHttp.open("POST", "./Controller/ReponsesAjax.php", false);
-        XmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        XmlHttp.send("action=deconn");
-    }
-
-}
-
 function GetXmlHttpObject()
 {
     var xmlhttpreq = null;
@@ -25,6 +12,21 @@ function GetXmlHttpObject()
     return(xmlhttpreq);
 }
 
+//////////////////////////////////////////Deconnection////////////////////////////////
+
+function deconnection() {
+    XmlHttp = GetXmlHttpObject();
+    if (XmlHttp == null) {
+        alert("Objets HTTP non supportés");
+    } else {
+        XmlHttp.onreadystatechange = stateChanged;
+        XmlHttp.open("POST", "./Controller/ReponsesAjax.php", false);
+        XmlHttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        XmlHttp.send("action=deconn");
+    }
+
+}
+
 function stateChanged()
 {
     var json;
@@ -37,6 +39,7 @@ function stateChanged()
         }
     }
 }
+//////////////////////////////////////////Fin - Deconnection////////////////////////////////
 
 function newGame() {
     location.href = "./index.php?a=partie";
@@ -45,6 +48,8 @@ function newGame() {
 function joinGame(id) {
     location.href = "./index.php?a=partie&g=" + id;
 }
+
+//////////////////////////////////////////Actualiser la barre de chargement des joueurs////////////////////////////////
 
 var nbplayers;
 var request;
@@ -82,7 +87,7 @@ function stateChangedActualiserJoueurs()
         }
     }
 }
-
+//////////////////////////////////////////Fin - actualiser barre joueurs////////////////////////////////
 
 function versJeux() {
     location.href = "./index.php?a=arene";

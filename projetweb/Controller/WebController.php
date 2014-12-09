@@ -6,7 +6,9 @@ include_once 'Controller.php';
 include_once './View/Vue.php';
 include_once './Model/cards.php';
 include_once './Model/stacks.php';
-
+/**
+ * La clase WebController créer une vue, lui feed certains attributs qui permettrons de savoir qu'elle affichage doit etre généré
+ */
 class WebController extends Controller {
 
     public function __construct() {
@@ -96,6 +98,7 @@ class WebController extends Controller {
         $list_user = Utilisateur::findByGameId($_SESSION['game_id']);
         $decks = array();
         $id;
+        //On récupère l'id de la personne connecté dans la liste des joueurs de la partie
         foreach ($list_user as $key => $value) {
             if ($value[1] == $_SESSION['login']) {
                 $id = $key;
