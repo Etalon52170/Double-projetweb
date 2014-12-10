@@ -1,17 +1,3 @@
-CREATE TABLE IF NOT EXISTS `utilisateur` (
-  `id_user` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `login` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `nb_victoire` int(5) NOT NULL,
-  `nb_partie` int(5) NOT NULL,
-  `mail` varchar(50) NOT NULL,
-  `nbCards` INT,      	 	-- Nombre de cartes récupérées en jouant
-  `indexx` INT,                     -- Carte courant du stack
-  `game_id` INT(10) UNSIGNED NULL,                -- Partie en cours
-  PRIMARY KEY (`id_user`),
-  FOREIGN KEY (game_id) REFERENCES games(id)
-);
-
 CREATE TABLE cards (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     symbol0 INT,  -- Numéros des 8 symboles apparraissant sur la carte
@@ -39,3 +25,16 @@ CREATE TABLE stacks (		-- Pioche des cartes des parties
     numOrder INT NOT NULL       -- Numéro d'ordre de cette carte dans cette partie
 );
 
+CREATE TABLE IF NOT EXISTS `utilisateur` (
+  `id_user` int(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `login` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `nb_victoire` int(5) NOT NULL,
+  `nb_partie` int(5) NOT NULL,
+  `mail` varchar(50) NOT NULL,
+  `nbCards` INT,      	 	-- Nombre de cartes récupérées en jouant
+  `indexx` INT,                     -- Carte courant du stack
+  `game_id` INT(10) UNSIGNED NULL,                -- Partie en cours
+  PRIMARY KEY (`id_user`),
+  FOREIGN KEY (game_id) REFERENCES games(id)
+);
