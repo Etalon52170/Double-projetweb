@@ -275,7 +275,7 @@ function stateChangedActualiserLooby()
     var json;
     if (request.readyState == 4) {
             window.document.getElementById("bs-example").innerHTML = JSON.parse(request.responseText);
-            setTimeout(function() {actualiserLooby();}, 5000);
+            setTimeout(function() {actualiserLooby();}, 1000);
     }
 }
 //////////////////////////////////////////Fin - Actualiser le Jeu////////////////////////////////
